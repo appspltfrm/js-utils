@@ -29,14 +29,14 @@
   },
   "exports": {
     "./core": {
-      "types": "dist/core/index.d.ts",
-      "import": "dist/core/index.js",
-      "require": "dist/cjs/core/index.js"
+      "types": "dist/core/public.d.ts",
+      "import": "dist/core/public.js",
+      "require": "dist/cjs/core/public.js"
     },
     "./json": {
-      "types": "dist/json/index.d.ts",
-      "import": "dist/json/index.js",
-      "require": "dist/cjs/json/index.js"
+      "types": "dist/json/public.d.ts",
+      "import": "dist/json/public.js",
+      "require": "dist/cjs/json/public.js"
     },
     "./json/TsTransformer": {
       "types": "dist/json/TsTransformer/index.d.ts",
@@ -44,14 +44,14 @@
       "require": "dist/cjs/json/TsTransformer/index.js"
     },
     "./preferences": {
-      "types": "dist/preferences/index.d.ts",
-      "import": "dist/preferences/index.js",
-      "require": "dist/cjs/preferences/index.js"
+      "types": "dist/preferences/public.d.ts",
+      "import": "dist/preferences/public.js",
+      "require": "dist/cjs/preferences/public.js"
     },
     "./preferences/rxjs": {
-      "types": "dist/preferences/rxjs/index.d.ts",
-      "import": "dist/preferences/rxjs/index.js",
-      "require": "dist/cjs/preferences/rxjs/index.js"
+      "types": "dist/preferences/rxjs/public.d.ts",
+      "import": "dist/preferences/rxjs/public.js",
+      "require": "dist/cjs/preferences/rxjs/public.js"
     }
   },
   "sideEffects": false
