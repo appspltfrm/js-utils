@@ -35,9 +35,9 @@
       "require": "dist/cjs/*/index.js"
     },
     "./preferences/*": {
-      "types": "dist/firebase/*/index.d.ts",
-      "import": "dist/firebase/*/index.js",
-      "require": "dist/cjs/firebase/*/index.js"
+      "types": "dist/preferences/*/index.d.ts",
+      "import": "dist/preferences/*/index.js",
+      "require": "dist/cjs/preferences/*/index.js"
     },
     "./json/TsTransformer": {
       "types": "dist/json/TsTransformer/index.d.ts",
