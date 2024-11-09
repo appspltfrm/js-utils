@@ -4,7 +4,6 @@
         "outDir": "dist/json/TsTransformer",
         "rootDir": "../..",
         "sourceMap": false,
-        "importHelpers": false
     },
     "files": [
         "index.ts"
