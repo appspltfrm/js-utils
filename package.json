@@ -28,20 +28,30 @@
     "typescript": "^5.6.3"
   },
   "exports": {
-    "./*": {
-      "types": "dist/*/index.d.ts",
-      "import": "dist/*/index.js",
-      "require": "dist/cjs/*/index.js"
+    "./core": {
+      "types": "dist/core/index.d.ts",
+      "import": "dist/core/index.js",
+      "require": "dist/cjs/core/index.js"
     },
-    "./preferences/*": {
-      "types": "dist/preferences/*/index.d.ts",
-      "import": "dist/preferences/*/index.js",
-      "require": "dist/cjs/preferences/*/index.js"
+    "./json": {
+      "types": "dist/json/index.d.ts",
+      "import": "dist/json/index.js",
+      "require": "dist/cjs/json/index.js"
     },
     "./json/TsTransformer": {
       "types": "dist/json/TsTransformer/index.d.ts",
       "import": "dist/json/TsTransformer/index.js",
       "require": "dist/cjs/json/TsTransformer/index.js"
+    },
+    "./preferences": {
+      "types": "dist/preferences/index.d.ts",
+      "import": "dist/preferences/index.js",
+      "require": "dist/cjs/preferences/index.js"
+    },
+    "./preferences/rxjs": {
+      "types": "dist/preferences/rxjs/index.d.ts",
+      "import": "dist/preferences/rxjs/index.js",
+      "require": "dist/cjs/preferences/rxjs/index.js"
     }
   },
   "sideEffects": false
