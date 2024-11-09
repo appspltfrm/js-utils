@@ -1,6 +1,7 @@
 {
   "name": "@appspltfrm/js-utils",
   "version": "2.0.0",
+  "private": "false",
   "author": "Unipla",
   "scripts": {
     "build": "node-utils-file-system-glob-delete \"dist/**/*\" && npm run build:cjs && npm run build:esm && npm run build:TsTransformer",
