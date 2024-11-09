@@ -1,0 +1,1 @@
+{"version":3,"file":"resolveForwardRef.js","sourceRoot":"","sources":["../../src/core/resolveForwardRef.ts"],"names":[],"mappings":"AAEA;;;;;;GAMG;AACH,MAAM,UAAU,iBAAiB,CAAC,IAAS;IACvC,IAAI,OAAO,IAAI,KAAK,UAAU,IAAI,IAAI,CAAC,cAAc,CAAC,iBAAiB,CAAC,IAAI,OAAO,IAAI,CAAC,eAAe,KAAK,UAAU,EAAE,CAAC;QACrH,OAAsB,IAAK,EAAE,CAAC;IAClC,CAAC;SAAM,CAAC;QACJ,OAAO,IAAI,CAAC;IAChB,CAAC;AACL,CAAC"}

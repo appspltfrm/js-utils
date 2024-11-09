@@ -1,0 +1,16 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "outDir": "dist",
+        "rootDir": "src",
+        "sourceMap": true,
+        "importHelpers": true
+    },
+
+    "exclude": [
+        "dist",
+        "test",
+        "src/json/TsTransformer",
+        "node_modules"
+    ]
+}

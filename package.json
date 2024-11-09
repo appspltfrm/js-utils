@@ -1,0 +1,49 @@
+{
+  "name": "@appspltfrm/js-utils",
+  "version": "2.0.0",
+  "author": "Unipla",
+  "scripts": {
+    "build": "node-utils-file-system-glob-delete \"dist/**/*\" && npm run build:cjs && npm run build:esm && npm run build:TsTransformer",
+    "build:cjs": "tsc -p tsconfig.build.json --module commonjs --target esnext --moduleResolution node --outDir dist/cjs --declaration false",
+    "build:esm": "tsc -p tsconfig.build.json --module esnext --target esnext --moduleResolution bundler --outDir dist",
+    "build:TsTransformer": "tsc -p src/json/TsTransformer/tsconfig.json --module commonjs --target esnext --moduleResolution node --outDir dist/cjs --declaration false && tsc -p src/json/TsTransformer/tsconfig.json --module esnext --target esnext --moduleResolution bundler --outDir dist",
+    "watch:TsTransformer": "tsc --watch -p src/json/TsTransformer/tsconfig.json -m commonjs -t es2015 --outDir dist",
+    "build:test": "node-utils-file-system-glob-delete \"dist-test/**/*\" && ttsc -P test/tsconfig.json",
+    "test:json": "ts-node -P test/tsconfig.json -C ttypescript -r tsconfig-paths/register test/json/test.ts"
+  },
+  "dependencies": {
+    "@appspltfrm/node-utils": "github:appspltfrm/node-utils",
+    "reflect-metadata": "^0.2.2"
+  },
+  "peerDependencies": {
+    "fast-equals": "^5.0.0",
+    "tslib": "^2.8.0"
+  },
+  "optionalDependencies": {
+    "bignumber.js": "^9.0.0",
+    "rxjs": "^7.4.0"
+  },
+  "devDependencies": {
+    "tsconfig-paths": "^4.2.0",
+    "ts-patch": "^3.2.1",
+    "typescript": "^5.6.3"
+  },
+  "exports": {
+    "./*": {
+      "types": "dist/*/index.d.ts",
+      "import": "dist/*/index.js",
+      "require": "dist/cjs/*/index.js"
+    },
+    "./preferences/*": {
+      "types": "dist/firebase/*/index.d.ts",
+      "import": "dist/firebase/*/index.js",
+      "require": "dist/cjs/firebase/*/index.js"
+    },
+    "./json/TsTransformer": {
+      "types": "dist/json/TsTransformer/index.d.ts",
+      "import": "dist/json/TsTransformer/index.js",
+      "require": "dist/cjs/json/TsTransformer/index.js"
+    }
+  },
+  "sideEffects": false
+}

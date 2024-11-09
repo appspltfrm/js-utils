@@ -1,0 +1,1 @@
+{"version":3,"file":"serialize.js","sourceRoot":"","sources":["../../src/json/serialize.ts"],"names":[],"mappings":"AACA,OAAO,EAAC,aAAa,EAAC,MAAM,oBAAoB,CAAC;AAEjD,MAAM,UAAU,SAAS,CAAC,MAAW,EAAE,OAA8B;IACjE,OAAO,aAAa,CAAC,MAAM,EAAE,IAAI,EAAE,OAAO,CAAC,CAAC;AAChD,CAAC"}
