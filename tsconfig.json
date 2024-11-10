@@ -8,7 +8,7 @@
         "pretty": true,
         "lib": ["dom", "esnext"],
         "module": "esnext",
-        "moduleResolution": "bundler",
+        "moduleResolution": "Bundler",
         "target": "esnext",
         "outDir": "dist",
         "rootDir": "./",

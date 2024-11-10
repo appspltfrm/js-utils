@@ -1,1 +1,0 @@
-{"version":3,"file":"globalType.js","sourceRoot":"","sources":["../../../../src/json/decorators/globalType.ts"],"names":[],"mappings":";;AAIA,gCAIC;AAND,4EAAmG;AAEnG,SAAgB,UAAU,CAAC,OAAuC;IAC9D,OAAO,UAAS,SAA8B;QAC1C,IAAA,kDAAsB,EAAC,EAAC,IAAI,EAAE,SAAS,CAAC,YAAY,EAAE,IAAI,EAAE,SAAS,EAAC,EAAE,OAAO,CAAC,CAAC;IACrF,CAAC,CAAA;AACL,CAAC"}

@@ -2,11 +2,11 @@
   "name": "@appspltfrm/js-utils",
   "version": "2.0.0",
   "author": "Unipla",
+  "type": "module",
   "scripts": {
-    "build": "node-utils-file-system-glob-delete \"dist/**/*\" && npm run build:cjs && npm run build:esm && npm run build:TsTransformer",
-    "build:cjs": "tsc -p tsconfig.build.json --module commonjs --target esnext --moduleResolution node --outDir dist/cjs --declaration false",
-    "build:esm": "tsc -p tsconfig.build.json --module esnext --target esnext --moduleResolution bundler --outDir dist",
-    "build:TsTransformer": "tsc -p src/json/TsTransformer/tsconfig.json --module commonjs --target esnext --moduleResolution node --outDir dist/cjs --declaration false && tsc -p src/json/TsTransformer/tsconfig.json --module esnext --target esnext --moduleResolution bundler --outDir dist",
+    "build": "node-utils-file-system-glob-delete \"dist/**/*\" && npm run build:esm && npm run build:TsTransformer",
+    "build:esm": "tsc -p tsconfig.build.json",
+    "build:TsTransformer": "tsc -p src/json/TsTransformer/tsconfig.json --module NodeNext --target esnext --moduleResolution NodeNext --outDir dist",
     "watch:TsTransformer": "tsc --watch -p src/json/TsTransformer/tsconfig.json -m commonjs -t es2015 --outDir dist",
     "build:test": "node-utils-file-system-glob-delete \"dist-test/**/*\" && ttsc -P test/tsconfig.json",
     "test:json": "ts-node -P test/tsconfig.json -C ttypescript -r tsconfig-paths/register test/json/test.ts"
@@ -29,29 +29,24 @@
   },
   "exports": {
     "./core": {
-      "types": "./dist/core/public.d.ts",
-      "import": "./dist/core/public.js",
-      "require": "./dist/cjs/core/public.js"
+      "types": "./core/public.d.ts",
+      "default": "./core/public.js"
     },
     "./json": {
-      "types": "./dist/json/public.d.ts",
-      "import": "./dist/json/public.js",
-      "require": "./dist/cjs/json/public.js"
+      "types": "./json/public.d.ts",
+      "default": "./json/public.js"
     },
     "./json/TsTransformer": {
-      "types": "./dist/json/TsTransformer/index.d.ts",
-      "import": "./dist/json/TsTransformer/index.js",
-      "require": "./dist/cjs/json/TsTransformer/index.js"
+      "types": "./json/TsTransformer/index.d.ts",
+      "default": "./json/TsTransformer/index.js"
     },
     "./preferences": {
-      "types": "./dist/preferences/public.d.ts",
-      "import": "./dist/preferences/public.js",
-      "require": "./dist/cjs/preferences/public.js"
+      "types": "./preferences/public.d.ts",
+      "default": "./preferences/public.js"
     },
     "./preferences/rxjs": {
-      "types": "./dist/preferences/rxjs/public.d.ts",
-      "import": "./dist/preferences/rxjs/public.js",
-      "require": "./dist/cjs/preferences/rxjs/public.js"
+      "types": "./preferences/rxjs/public.d.ts",
+      "default": "./preferences/rxjs/public.js"
     }
   },
   "sideEffects": false
