@@ -1,4 +1,4 @@
-import {Enum, EnumValueOfValue} from "@co.mmons/js-utils/core";
+import {Enum, EnumValueOfValue} from "@appspltfrm/js-utils/core/Enum.js";
 
 class A extends Enum {
     static readonly test1 = new A("test1");

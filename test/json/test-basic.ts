@@ -1,5 +1,7 @@
-import {serializable, serialize, unserialize} from "@co.mmons/js-utils/json";
-import BigNumber from "bignumber.js";
+import {serializable} from "@appspltfrm/js-utils/json/decorators/serializable.js";
+import {serialize} from "@appspltfrm/js-utils/json/serialize.js";
+import {unserialize} from "@appspltfrm/js-utils/json/unserialize.js";
+import {BigNumber} from "bignumber.js";
 
 @serializable()
 export class X {

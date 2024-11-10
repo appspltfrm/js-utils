@@ -1,5 +1,6 @@
-import {serialize, property} from "@co.mmons/js-utils/json";
-import {ArraySerializer} from "@co.mmons/js-utils/json/serializers";
+import {serialize} from "@appspltfrm/js-utils/json/serialize.js";
+import {property} from "@appspltfrm/js-utils/json/decorators/property.js";
+import {ArraySerializer} from "@appspltfrm/js-utils/json/serializers/ArraySerializer.js";
 
 class Model {
 

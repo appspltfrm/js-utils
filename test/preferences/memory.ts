@@ -1,4 +1,4 @@
-import {MemoryPreferencesContainer} from "../../src/preferences";
+import {MemoryPreferencesContainer} from "@appspltfrm/js-utils/preferences/MemoryPreferencesContainer.js";
 
 (async () => {
 

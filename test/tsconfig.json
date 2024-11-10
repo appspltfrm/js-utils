@@ -2,9 +2,11 @@
     "extends": "../tsconfig.json",
     "compilerOptions": {
         "outDir": "../dist-test",
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
         "paths": {
-            "@co.mmons/js-utils": ["src"],
-            "@co.mmons/js-utils/*": ["src/*"]
+            "@appspltfrm/js-utils": ["src"],
+            "@appspltfrm/js-utils/*": ["src/*"]
         },
         "sourceMap": true,
         "importHelpers": true,

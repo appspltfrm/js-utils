@@ -1,7 +1,9 @@
-import {Enum, EnumFromJSONValue, EnumValueName, EnumValueOfValue} from "@co.mmons/js-utils/core";
-import {property, serializable, serialize, unserialize} from "@co.mmons/js-utils/json";
-import {EnumAsStringSerializer} from "@co.mmons/js-utils/json/serializers";
-import BigNumber from "bignumber.js";
+import {Enum, EnumFromJSONValue, EnumValueName, EnumValueOfValue} from "@appspltfrm/js-utils/core/Enum.js";
+import {property} from "@appspltfrm/js-utils/json/decorators/property.js";
+import {serializable} from "@appspltfrm/js-utils/json/decorators/serializable.js";
+import {serialize} from "@appspltfrm/js-utils/json/serialize.js";
+import {EnumAsStringSerializer} from "@appspltfrm/js-utils/json/serializers/EnumAsStringSerializer.js";
+import {unserialize} from "@appspltfrm/js-utils/json/unserialize.js";
 
 export class E extends Enum {
 

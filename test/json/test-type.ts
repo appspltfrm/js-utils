@@ -1,4 +1,7 @@
-import {globalType, serializable, serialize, unserialize} from "@co.mmons/js-utils/json";
+import {globalType} from "@appspltfrm/js-utils/json/decorators/globalType.js";
+import {serializable} from "@appspltfrm/js-utils/json/decorators/serializable.js";
+import {serialize} from "@appspltfrm/js-utils/json/serialize.js";
+import {unserialize} from "@appspltfrm/js-utils/json/unserialize.js";
 
 export class X {
     static readonly jsonTypeName: string = "X";

@@ -9,7 +9,7 @@
     "build:TsTransformer": "tsc -p src/json/TsTransformer/tsconfig.json --module NodeNext --target esnext --moduleResolution NodeNext --outDir dist",
     "watch:TsTransformer": "tsc --watch -p src/json/TsTransformer/tsconfig.json -m commonjs -t es2015 --outDir dist",
     "build:test": "node-utils-file-system-glob-delete \"dist-test/**/*\" && ttsc -P test/tsconfig.json",
-    "test:json": "ts-node -P test/tsconfig.json -C ttypescript -r tsconfig-paths/register test/json/test.ts"
+    "test:json": "tsx --tsconfig test/tsconfig.json test/json/test.ts"
   },
   "dependencies": {
     "@appspltfrm/node-utils": "github:appspltfrm/node-utils",
@@ -25,6 +25,7 @@
   "devDependencies": {
     "ts-patch": "^3.2.1",
     "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.19.2",
     "typescript": "^5.6.3"
   },
   "exports": {

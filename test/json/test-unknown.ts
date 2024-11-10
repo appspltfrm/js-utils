@@ -1,5 +1,5 @@
-import {TimeZoneDate} from "@co.mmons/js-utils/core";
-import {unserialize} from "@co.mmons/js-utils/json";
+import {TimeZoneDate} from "@appspltfrm/js-utils/core/TimeZoneDate.js";
+import {unserialize} from "@appspltfrm/js-utils/json/unserialize.js";
 
 export function test() {
 

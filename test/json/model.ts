@@ -1,5 +1,8 @@
-import {ignore, property, serializable, globalType} from "@co.mmons/js-utils/json";
-import {ArraySerializer} from "@co.mmons/js-utils/json/serializers";
+import {globalType} from "@appspltfrm/js-utils/json/decorators/globalType.js";
+import {ignore} from "@appspltfrm/js-utils/json/decorators/ignore.js";
+import {property} from "@appspltfrm/js-utils/json/decorators/property.js";
+import {serializable} from "@appspltfrm/js-utils/json/decorators/serializable.js";
+import {ArraySerializer} from "@appspltfrm/js-utils/json/serializers/ArraySerializer.js";
 
 export class ModelA {
 

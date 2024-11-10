@@ -1,5 +1,9 @@
-import {serializable, serialize, unserialize, property, SerializationOptions} from "@co.mmons/js-utils/json";
-import {ArraySerializer} from "@co.mmons/js-utils/json/serializers";
+import {property} from "@appspltfrm/js-utils/json/decorators/property.js";
+import {serializable} from "@appspltfrm/js-utils/json/decorators/serializable.js";
+import {SerializationOptions} from "@appspltfrm/js-utils/json/SerializationOptions.js";
+import {serialize} from "@appspltfrm/js-utils/json/serialize.js";
+import {ArraySerializer} from "@appspltfrm/js-utils/json/serializers/ArraySerializer.js";
+import {unserialize} from "@appspltfrm/js-utils/json/unserialize.js";
 
 @serializable()
 class Ha1 {

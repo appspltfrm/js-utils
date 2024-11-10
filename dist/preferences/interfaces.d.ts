@@ -37,7 +37,7 @@ export interface PreferencesItemRef<Key = any, Value = any> {
     delete(): Promise<boolean>;
     set(value: Value): Promise<PreferencesItem<Key, Value>>;
     set(value: Value | Partial<Value>, options?: PreferencesSetOptions): Promise<PreferencesItem<Key, Value>>;
-    update(value: Value): Promise<PreferencesItem<Key, Value>>;
+    update(value: Partial<Value>): Promise<PreferencesItem<Key, Value>>;
 }
 export interface PreferencesItemValueRef<Value = any> extends PreferencesItemRef<any, Value> {
 }

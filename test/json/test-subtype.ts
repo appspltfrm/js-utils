@@ -1,4 +1,7 @@
-import {subtype, serialize, unserialize, serializable} from "@co.mmons/js-utils/json";
+import {serializable} from "@appspltfrm/js-utils/json/decorators/serializable.js";
+import {subtype} from "@appspltfrm/js-utils/json/decorators/subtype.js";
+import {serialize} from "@appspltfrm/js-utils/json/serialize.js";
+import {unserialize} from "@appspltfrm/js-utils/json/unserialize.js";
 
 @serializable()
 class A {
