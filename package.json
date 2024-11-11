@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "install": "node-utils-npm-install-dist",
-    "build": "node-utils-file-system-glob-delete \"dist/**/*\" && npm run build:esm && npm run build:TsTransformer",
+    "build": "node-utils-file-system-glob-delete \"dist/**/*\" && npm run build:esm && npm run build:TsTransformer && ",
     "build:esm": "tsc -p tsconfig.build.json",
-    "build:TsTransformer": "tsc -p src/json/TsTransformer/tsconfig.json --module commonjs --target esnext --moduleResolution node --outDir dist",
+    "build:TsTransformer": "tsc -p src/json/TsTransformer/tsconfig.json --module commonjs --target esnext --moduleResolution node --outDir dist && node-utils-file-system-glob-copy src dist \"**/package.json\"",
     "watch:TsTransformer": "tsc --watch -p src/json/TsTransformer/tsconfig.json -m commonjs -t es2015 --outDir dist",
     "build:test": "node-utils-file-system-glob-delete \"dist-test/**/*\" && ttsc -P test/tsconfig.json",
     "test:json": "tsx --tsconfig test/tsconfig.json test/json/test.ts"
