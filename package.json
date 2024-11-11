@@ -4,6 +4,7 @@
   "author": "Unipla",
   "type": "module",
   "scripts": {
+    "install": "node-utils-npm-install-dist",
     "build": "node-utils-file-system-glob-delete \"dist/**/*\" && npm run build:esm && npm run build:TsTransformer",
     "build:esm": "tsc -p tsconfig.build.json",
     "build:TsTransformer": "tsc -p src/json/TsTransformer/tsconfig.json --module NodeNext --target esnext --moduleResolution NodeNext --outDir dist",
