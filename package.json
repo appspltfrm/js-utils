@@ -16,10 +16,8 @@
     "@appspltfrm/node-utils": "github:appspltfrm/node-utils",
     "reflect-metadata": "^0.2.2"
   },
-  "peerDependencies": {
-    "fast-equals": "^5.0.0"
-  },
   "optionalDependencies": {
+    "fast-equals": "^5.0.0",
     "bignumber.js": "^9.0.0",
     "rxjs": "^7.4.0"
   },
