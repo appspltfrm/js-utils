@@ -20,5 +20,5 @@ export { timeZoneOffset } from "./timeZoneOffset.js";
 export { toInteger, isArrayContainsInstanceOf, mapEntries, toFloat, toString } from "./types.js";
 export { waitTill } from "./wait.js";
 export { clone } from "./clone.js";
-export { wasmSupported } from "./wasmSupport";
+export { wasmSupported } from "./wasmSupport.js";
 //# sourceMappingURL=public.js.map
