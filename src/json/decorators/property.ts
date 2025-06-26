@@ -6,13 +6,13 @@ import {setupSerialization} from "../setupSerialization.js";
 import {PropertyConfig} from "./PropertyConfig.js";
 import "reflect-metadata";
 
-export function property(type?: Function | Serializer): Function;
+export function property(type?: Type | Serializer): Function;
 
-export function property(type: Function | Serializer, options?: SerializationOptions): Function;
+export function property(type: Type | Serializer, options?: SerializationOptions): Function;
 
-export function property(type: Function | Serializer, jsonName?: string): Function;
+export function property(type: Type | Serializer, jsonName?: string): Function;
 
-export function property(type: Function | Serializer, jsonName: string, options?: SerializationOptions): Function;
+export function property(type: Type | Serializer, jsonName: string, options?: SerializationOptions): Function;
 
 export function property(jsonName?: string): Function;
 
