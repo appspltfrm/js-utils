@@ -4,7 +4,7 @@
  *
  * @link http://stackoverflow.com/a/37778842
  */
-export function Final(target: any, propertyKey: string) {
+export function final(target: any, propertyKey: string) {
     const value: any = target[propertyKey];
     // if it currently has no value, then wait for the first setter-call
     // usually the case with non-static fields

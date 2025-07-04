@@ -1,1 +1,1 @@
-export declare function compareDate(first: Date, second: Date): number;
+export declare function compareDate(first: Date, second: Date, ignoreTime?: boolean): number;

@@ -5,7 +5,7 @@ export {DateTimezone} from "./DateTimezone.js";
 export {EnumValueName, Enum, EnumFromJSONValue, EnumValueOfValue, EnumStatic, EnumValueJson} from "./Enum.js";
 export {Enumerable} from "./Enumerable.js";
 export {Equals, equals} from "./equals.js";
-export {Final} from "./Final.js";
+export {final} from "./final.js";
 export {HtmlString} from "./HtmlString.js";
 export {LocalDate} from "./LocalDate.js";
 export {NoTimeDate} from "./NoTimeDate.js";

@@ -4,7 +4,7 @@
  *
  * @link http://stackoverflow.com/a/37778842
  */
-export function Final(target, propertyKey) {
+export function final(target, propertyKey) {
     const value = target[propertyKey];
     // if it currently has no value, then wait for the first setter-call
     // usually the case with non-static fields
@@ -32,4 +32,4 @@ export function Final(target, propertyKey) {
         });
     }
 }
-//# sourceMappingURL=Final.js.map
+//# sourceMappingURL=final.js.map

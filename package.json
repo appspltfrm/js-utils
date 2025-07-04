@@ -10,7 +10,8 @@
     "build:TsTransformer": "tsc -p src/json/TsTransformer/tsconfig.json --module commonjs --target esnext --moduleResolution node --outDir dist && node-utils-file-system-glob-copy src dist \"**/package.json\"",
     "watch:TsTransformer": "tsc --watch -p src/json/TsTransformer/tsconfig.json -m commonjs -t es2015 --outDir dist",
     "build:test": "node-utils-file-system-glob-delete \"dist-test/**/*\" && ttsc -P test/tsconfig.json",
-    "test:json": "tsx --tsconfig test/tsconfig.json test/json/test.ts"
+    "test:json": "tsx --tsconfig test/tsconfig.json test/json/test.ts",
+    "test:dates": "tsx --tsconfig test/tsconfig.json test/core/dates.ts"
   },
   "dependencies": {
     "@appspltfrm/node-utils": "github:appspltfrm/node-utils",

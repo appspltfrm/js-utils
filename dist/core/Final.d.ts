@@ -4,4 +4,4 @@
  *
  * @link http://stackoverflow.com/a/37778842
  */
-export declare function Final(target: any, propertyKey: string): void;
+export declare function final(target: any, propertyKey: string): void;
