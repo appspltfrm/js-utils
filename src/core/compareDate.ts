@@ -1,4 +1,4 @@
-import {LocalDate} from "./LocalDate";
+import {LocalDate} from "./LocalDate.js";
 
 export function compareDate(first: Date, second: Date, ignoreTime = false): number {
 
