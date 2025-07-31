@@ -4,7 +4,6 @@
   "author": "Unipla",
   "type": "module",
   "scripts": {
-    "install": "node-utils-npm-install-dist",
     "build": "node-utils-file-system-glob-delete \"dist/**/*\" && npm run build:esm && npm run build:TsTransformer",
     "build:esm": "tsc -p tsconfig.build.json",
     "build:TsTransformer": "tsc -p src/json/TsTransformer/tsconfig.json --module commonjs --target esnext --moduleResolution node --outDir dist && node-utils-file-system-glob-copy src dist \"**/package.json\"",
@@ -18,8 +17,8 @@
     "reflect-metadata": "^0.2.2"
   },
   "optionalDependencies": {
-    "fast-equals": "^5.0.0",
     "bignumber.js": "^9.0.0",
+    "fast-equals": "^5.0.0",
     "rxjs": "^7.4.0"
   },
   "devDependencies": {
@@ -30,25 +29,26 @@
   },
   "exports": {
     "./core": {
-      "types": "./core/public.d.ts",
-      "default": "./core/public.js"
+      "types": "./dist/core/public.d.ts",
+      "default": "./dist/core/public.js"
     },
     "./json": {
-      "types": "./json/public.d.ts",
-      "default": "./json/public.js"
+      "types": "./dist/json/public.d.ts",
+      "default": "./dist/json/public.js"
     },
     "./json/TsTransformer": {
-      "types": "./json/TsTransformer/index.d.ts",
-      "default": "./json/TsTransformer/index.js"
+      "types": "./dist/json/TsTransformer/index.d.ts",
+      "default": "./dist/json/TsTransformer/index.js"
     },
     "./preferences": {
-      "types": "./preferences/public.d.ts",
-      "default": "./preferences/public.js"
+      "types": "./dist/preferences/public.d.ts",
+      "default": "./dist/preferences/public.js"
     },
     "./preferences/rxjs": {
-      "types": "./preferences/rxjs/public.d.ts",
-      "default": "./preferences/rxjs/public.js"
+      "types": "./dist/preferences/rxjs/public.d.ts",
+      "default": "./dist/preferences/rxjs/public.js"
     }
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "packageManager": "yarn@4.9.2"
 }

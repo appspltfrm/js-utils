@@ -4,3 +4,4 @@ npm-debug.log
 !.idea/.name
 dist-test
 .tmp/
+.yarn
