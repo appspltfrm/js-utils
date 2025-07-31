@@ -5,3 +5,5 @@ npm-debug.log
 dist-test
 .tmp/
 .yarn
+.yarn.lock
+.DS_Store
