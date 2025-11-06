@@ -4,6 +4,7 @@ export { DateSerializer } from "./serializers/DateSerializer.js";
 export { EnumAsStringSerializer } from "./serializers/EnumAsStringSerializer.js";
 export { JsonTypeName } from "./JsonTypeName.js";
 export { NumberSerializer } from "./serializers/NumberSerializer.js";
+export { RegExpSerializer } from "./serializers/RegExpSerializer.js";
 export { ObjectAsMapSerializer } from "./serializers/ObjectAsMapSerializer.js";
 export { ObjectSerializer } from "./serializers/ObjectSerializer.js";
 export { SerializationOptions } from "./SerializationOptions.js";

@@ -3,6 +3,7 @@ export { BooleanSerializer } from "./serializers/BooleanSerializer.js";
 export { DateSerializer } from "./serializers/DateSerializer.js";
 export { EnumAsStringSerializer } from "./serializers/EnumAsStringSerializer.js";
 export { NumberSerializer } from "./serializers/NumberSerializer.js";
+export { RegExpSerializer } from "./serializers/RegExpSerializer.js";
 export { ObjectAsMapSerializer } from "./serializers/ObjectAsMapSerializer.js";
 export { ObjectSerializer } from "./serializers/ObjectSerializer.js";
 export { Serializer } from "./Serializer.js";
