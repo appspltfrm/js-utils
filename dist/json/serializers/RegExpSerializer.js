@@ -5,7 +5,11 @@ export class RegExpSerializer extends Serializer {
             return this.serializeUndefinedOrNull(value, options);
         }
         else if (value instanceof RegExp) {
-            return { "@type": "RegExp", pattern: value.source, flags: value.flags };
+            const json = { "@type": "RegExp", pattern: value.source };
+            if (value.flags) {
+                json.flags = value.flags;
+            }
+            return json;
         }
         else if (!options || !options.ignoreErrors) {
             throw new Error(`Cannot serialize "${value}" as RegExp`);

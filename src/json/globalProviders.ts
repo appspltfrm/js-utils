@@ -14,7 +14,7 @@ export const globalProviders: InternalTypeProvider[] = [
     {type: LocalDate, name: LocalDate.jsonTypeName, serializer: DateSerializer.instance},
     {type: NoTimeDate, name: NoTimeDate.jsonTypeName, serializer: DateSerializer.instance},
     {type: Number, serializer: NumberSerializer.instance},
-    {type: RegExp, serializer: RegExpSerializer.instance},
+    {type: RegExp, name: "RegExp", serializer: RegExpSerializer.instance},
     {type: String, serializer: StringSerializer.instance},
     {type: TimeZoneDate, name: TimeZoneDate.jsonTypeName, serializer: DateSerializer.instance}
 ];
