@@ -4,7 +4,7 @@ import {TimeZoneDate} from "../core/TimeZoneDate.js";
 import {BooleanSerializer} from "./serializers/BooleanSerializer.js";
 import {DateSerializer} from "./serializers/DateSerializer.js";
 import {NumberSerializer} from "./serializers/NumberSerializer.js";
-import {RegExpSerializer} from "./serializers/RegExpSerializer";
+import {RegExpSerializer} from "./serializers/RegExpSerializer.js";
 import {StringSerializer} from "./serializers/StringSerializer.js";
 import {InternalTypeProvider} from "./TypeProvider.js";
 
