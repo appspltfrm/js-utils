@@ -16,6 +16,7 @@ type OmitFunctions<T> = Omit<T, FunctionKeys<T>>;
 
 export type EnumFromJSONValue = string | EnumValueJson | any;
 export type EnumValueOfValue = string | EnumValueJson;
+export type EnumStaticName<TypeOfEnumClass extends EnumStatic<any>> = Extract<Exclude<keyof TypeOfEnumClass, "prototype" | "values" | "fromJSON" | "valueOf" | "jsonTypeName">, string>;
 export type EnumValueName<TypeOfEnumClass extends EnumStatic<any>> = Extract<Exclude<keyof OmitFunctions<TypeOfEnumClass>, "prototype" | "jsonTypeName">, string>;
 
 export abstract class Enum {

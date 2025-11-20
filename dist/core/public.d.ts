@@ -2,7 +2,7 @@ export { AssignableType, Type } from "./Type.js";
 export { BitFlagsMutable } from "./BitFlagsMutable.js";
 export { BitFlags } from "./BitFlags.js";
 export { DateTimezone } from "./DateTimezone.js";
-export { EnumValueName, Enum, EnumFromJSONValue, EnumValueOfValue, EnumStatic, EnumValueJson } from "./Enum.js";
+export { EnumValueName, EnumStaticName, Enum, EnumFromJSONValue, EnumValueOfValue, EnumStatic, EnumValueJson } from "./Enum.js";
 export { Enumerable } from "./Enumerable.js";
 export { Equals, equals } from "./equals.js";
 export { final } from "./final.js";
