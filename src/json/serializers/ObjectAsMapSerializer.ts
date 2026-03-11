@@ -13,7 +13,7 @@ export class ObjectAsMapSerializer extends Serializer {
         this.typeOrSerializer = valueTypeOrSerializer;
     }
 
-    private readonly typeOrSerializer: Type | Serializer;
+    private readonly typeOrSerializer: Type | Serializer | undefined;
 
     serialize(value: any, options?: SerializationOptions): any {
 
@@ -23,7 +23,7 @@ export class ObjectAsMapSerializer extends Serializer {
         } else if (typeof value === "object") {
 
             const serializer = this.typeOrSerializer instanceof Serializer ? this.typeOrSerializer : (this.typeOrSerializer && ObjectSerializer.getTypeSerializer(this.typeOrSerializer, options?.typeProviders)) || ObjectSerializer.instance;
-            const json = {};
+            const json: any = {};
 
             for (const i in value) {
                 json[i] = serializer.serialize(value[i], options);
@@ -47,7 +47,7 @@ export class ObjectAsMapSerializer extends Serializer {
         } else if (typeof value === "object") {
 
             const serializer = this.typeOrSerializer instanceof Serializer ? this.typeOrSerializer : (this.typeOrSerializer && ObjectSerializer.getTypeSerializer(this.typeOrSerializer, options?.typeProviders)) || ObjectSerializer.instance;
-            const object = {};
+            const object: any = {};
 
             for (const i in value) {
                 object[i] = serializer.unserialize(value[i], options);

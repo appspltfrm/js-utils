@@ -3,6 +3,10 @@ import {clone, Clone} from "./clone.js";
 /**
  * A date, that points to absolute date - no time, no time zone, just year-month-date.
  */
+/**
+ * Klasa reprezentująca datę bez komponentu czasu.
+ * Wszystkie operacje na tej dacie ignorują godziny, minuty i sekundy (są one zawsze zerowane).
+ */
 export class NoTimeDate extends Date implements Clone<NoTimeDate> {
 
     static readonly jsonTypeName = "NoTimeDate";
@@ -23,7 +27,7 @@ export class NoTimeDate extends Date implements Clone<NoTimeDate> {
 
     constructor(year: number, month: number, date: number);
 
-    constructor(valueOrYear?: number | string | Date, month?, date?: number) {
+    constructor(valueOrYear?: number | string | Date, month?: number, date?: number) {
 
         if (typeof month === "number") {
             super(Date.UTC(valueOrYear as number, month, date, 0, 0, 0, 0));

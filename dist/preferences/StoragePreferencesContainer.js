@@ -39,7 +39,7 @@ export class StoragePreferencesContainer {
         }
         return undefined;
     }
-    set(collection, key, value, options) {
+    async set(collection, key, value, options) {
         const itemKey = this.storageKey(collection, key);
         let item = this.getStorageItem(itemKey);
         if (value === undefined) {
@@ -122,7 +122,7 @@ export class StoragePreferencesContainer {
     items(collection, keysToFilter) {
         const items = [];
         const args = arguments;
-        const keys = arguments.length > 1 && new Array(arguments.length - 1).fill(undefined).map((value, index) => args[index + 1]);
+        const keys = arguments.length > 1 ? new Array(arguments.length - 1).fill(undefined).map((value, index) => args[index + 1]) : undefined;
         if (keys) {
             KEYS: for (const key of keys) {
                 const itemKey = this.storageKey(collection, key);

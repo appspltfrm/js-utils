@@ -4,7 +4,7 @@ export interface PreferencesContainer {
 
     update<Key = any, Value = any>(collection: string, key: Key, value: Partial<Value>): Promise<PreferencesItem<Key, Value>>;
 
-    get<Key = any, Value = any>(collection: string, key: Key): Promise<PreferencesItem<Key, Value>>;
+    get<Key = any, Value = any>(collection: string, key: Key): Promise<PreferencesItem<Key, Value> | undefined>;
 
     exists(collection: string, key: any): Promise<boolean>;
 

@@ -1,4 +1,7 @@
 import { clone } from "./clone.js";
+/**
+ * Klasa reprezentująca datę z przypisaną konkretną strefą czasową.
+ */
 export class TimeZoneDate extends Date {
     static jsonTypeName = "TimeZoneDate";
     static fromJSON(json) {
@@ -26,12 +29,12 @@ export class TimeZoneDate extends Date {
         return new TimeZoneDate(this.getTime(), this.timeZone);
     }
     toString() {
-        return new Intl.DateTimeFormat(undefined, { timeZone: this.timeZone, timeZoneName: "short" }).format(this);
+        return new Intl.DateTimeFormat(undefined, { timeZone: this.timeZone || undefined, timeZoneName: "short" }).format(this);
     }
     toJSON() {
         const json = { "@type": "TimeZoneDate", date: super.toJSON() };
         if (this.timeZone) {
-            json["timeZone"] = this.timeZone;
+            json.timeZone = this.timeZone;
         }
         return json;
     }

@@ -1,5 +1,14 @@
 import { getSupertypes } from "../getSupertypes.js";
 import { setupSerialization } from "../setupSerialization.js";
+/**
+ * Dekorator oznaczający klasę jako serializowalną.
+ * Pozwala na zachowanie informacji o typie klasy podczas konwersji do formatu JSON.
+ *
+ * Jeśli projekt korzysta z `TsTransformer`, metadane o polach są wstrzykiwane automatycznie.
+ * W przeciwnym razie należy je zdefiniować w `options`.
+ *
+ * @param options Konfiguracja serializacji (opcjonalna przy użyciu TsTransformera).
+ */
 export function serializable(options) {
     // when TsTransformer used, there can be up to 2 arguments
     // second argument is default options map, so we have to marge it

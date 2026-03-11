@@ -23,12 +23,12 @@ function unserializeImplWithSerializer(value, type, typeSerializer, options) {
     else if (type?.fromJSON) {
         return type.fromJSON(value, options);
     }
-    else if (type?.prototype["fromJSON"]) {
+    else if (type?.prototype?.["fromJSON"]) {
         const unserialized = Object.create(type.prototype);
         unserialized.fromJSON(value, options);
         return unserialized;
     }
-    else if (type && type !== Object && type !== Array) {
+    else if (type && type !== Object && type !== Array && type.prototype?.constructor) {
         return new type(value);
     }
     else {

@@ -1,4 +1,6 @@
 import { Type } from "../../core/Type.js";
 import { SubtypeMatcher } from "../SubtypeMatcher.js";
-export declare function subtype(supertype: Type, matcher: SubtypeMatcher): any;
-export declare function subtype(supertype: Type, property: string, value: any): any;
+type Fn = (classType: Type) => void;
+export declare function subtype(supertype: Type, matcher: SubtypeMatcher): Fn;
+export declare function subtype(supertype: Type, property: string, value: any): Fn;
+export {};

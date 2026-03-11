@@ -1,8 +1,8 @@
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
-import { PreferencesCollectionRefImpl } from "../PreferencesCollectionRefImpl";
-import { deepClone } from "../deepClone";
-import { PreferencesItemImpl } from "../PreferencesItemImpl";
+import { deepClone } from "../deepClone.js";
+import { PreferencesCollectionRefImpl } from "../PreferencesCollectionRefImpl.js";
+import { PreferencesItemImpl } from "../PreferencesItemImpl.js";
 class CollectionItemsObserver extends Observable {
     collection;
     constructor(collection) {

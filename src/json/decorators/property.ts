@@ -18,6 +18,14 @@ export function property(jsonName?: string): Function;
 
 export function property(jsonName: string, options?: SerializationOptions): Function;
 
+/**
+ * Dekorator definiujący właściwości pola podczas serializacji.
+ * Pozwala określić typ pola, jego nazwę w formacie JSON oraz dodatkowe opcje.
+ * 
+ * @param type Klasa lub Serializer używany do obsługi tego pola.
+ * @param jsonName Opcjonalna nazwa pola w JSON (jeśli inna niż w klasie).
+ * @param options Dodatkowe opcje serializacji.
+ */
 export function property(): Function {
 
     let jsonType: Type | Serializer;
@@ -40,7 +48,7 @@ export function property(): Function {
         const type = classPrototype.constructor as InternalType;
         const config = Object.assign({
             propertyType: jsonType,
-            propertyDesignType: !jsonType && Reflect.getMetadata("design:type", classPrototype, propertyName),
+            propertyDesignType: !jsonType ? Reflect.getMetadata("design:type", classPrototype, propertyName) : undefined,
             propertyJsonName: jsonName
         }, options) as PropertyConfig;
 

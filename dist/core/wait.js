@@ -29,7 +29,7 @@ export function waitTill(condition, interval = 100, timeout) {
         };
         if (!test()) {
             intervalId = setInterval(test, interval === undefined || interval === null || interval < 0 ? 100 : interval);
-            if (timeout > 0) {
+            if (typeof timeout === "number" && timeout > 0) {
                 setTimeout(() => {
                     if (!finished) {
                         if (intervalId) {

@@ -5,11 +5,11 @@ import {InternalType} from "./InternalType.js";
 import {SerializationOptions} from "./SerializationOptions.js";
 import {Serializer} from "./Serializer.js";
 
-export function unserializeImpl(value: any, type: InternalType, options: SerializationOptions) {
+export function unserializeImpl(value: any, type: InternalType | null | undefined, options?: SerializationOptions) {
     return unserializeImplWithSerializer(value, type, null, options);
 }
 
-function unserializeImplWithSerializer(value: any, type: InternalType, typeSerializer: Serializer | false, options: SerializationOptions) {
+function unserializeImplWithSerializer(value: any, type: InternalType | null | undefined, typeSerializer: Serializer | false | null | undefined, options?: SerializationOptions): any {
 
     if (value === undefined || value === null) {
         return value;
@@ -33,19 +33,19 @@ function unserializeImplWithSerializer(value: any, type: InternalType, typeSeria
     } else if (type?.fromJSON) {
         return type.fromJSON(value, options);
 
-    } else if (type?.prototype["fromJSON"]) {
+    } else if (type?.prototype?.["fromJSON"]) {
         const unserialized = Object.create(type.prototype);
         unserialized.fromJSON(value, options);
         return unserialized;
 
-    } else if (type && type !== Object && type !== Array) {
+    } else if (type && type !== Object && type !== Array && type.prototype?.constructor) {
         return new (type as any)(value);
 
     } else {
 
         type = identifyType(value);
         if (type !== Object) {
-            const serializer = findTypeSerializer(type, options?.typeProviders);
+            const serializer = findTypeSerializer(type!, options?.typeProviders);
             if (serializer) {
                 return serializer.unserialize(value, options)
             }
@@ -56,7 +56,7 @@ function unserializeImplWithSerializer(value: any, type: InternalType, typeSeria
             return unserializeImplWithSerializer(value, (namedTypeOrSerializer instanceof Serializer) ? null : namedTypeOrSerializer, namedTypeOrSerializer instanceof Serializer ? namedTypeOrSerializer : null, options);
         }
 
-        const niu = {};
+        const niu: any = {};
 
         for (const property of Object.keys(value)) {
             niu[property] = unserializeImpl(value[property], null, options);

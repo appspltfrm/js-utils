@@ -22,7 +22,7 @@ export class DateTimezone {
         if (typeof dateOrEpoch === "number") {
             this.date = new Date(dateOrEpoch);
         }
-        else if (dateOrEpoch instanceof Date) {
+        else {
             this.date = new Date(dateOrEpoch.getTime());
         }
     }

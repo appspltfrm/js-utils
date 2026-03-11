@@ -1,26 +1,29 @@
 {
     "compilerOptions": {
+        "strict": true,
+        "isolatedModules": true,
         "allowSyntheticDefaultImports": true,
         "declaration": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
-        "esModuleInterop": true,
-        "pretty": true,
-        "lib": ["dom", "esnext"],
-        "module": "esnext",
-        "moduleResolution": "Bundler",
-        "target": "esnext",
+        "lib": ["ESNext", "WebWorker", "ES2015.Reflect", "DOM"],
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "skipDefaultLibCheck": true,
+        "skipLibCheck": true,
+        "target": "ESNext",
         "outDir": "dist",
-        "rootDir": "./",
-        "baseUrl": "./",
+        "rootDir": "src",
         "sourceMap": true,
-        "importHelpers": false
+        "importHelpers": true,
+        "customConditions": ["development"]
     },
 
     "exclude": [
         "dist",
-        "test",
-        "test",
-        "node_modules"
-    ]
+        "node_modules",
+        "test"
+    ],
+
+    "compileOnSave": false
 }

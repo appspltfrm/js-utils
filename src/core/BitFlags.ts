@@ -1,5 +1,9 @@
 import {clone, Clone} from "./clone.js";
 
+/**
+ * Klasa narzędziowa do obsługi flag bitowych w sposób niemutowalny.
+ * Każda operacja (add, remove, toggle) zwraca nową instancję BitFlags.
+ */
 export class BitFlags implements Clone<BitFlags> {
 
 	constructor(value?: number) {

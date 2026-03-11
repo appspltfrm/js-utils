@@ -1,4 +1,7 @@
-import {PreferencesCollectionRef, PreferencesContainer, PreferencesItem, PreferencesItemEventListener, PreferencesSetOptions} from "./interfaces.js";
+import {
+    PreferencesCollectionRef, PreferencesContainer, PreferencesItem, PreferencesItemEventListener,
+    PreferencesItemRef, PreferencesSetOptions
+} from "./interfaces.js";
 import {PreferencesItemRefImpl} from "./PreferencesItemRefImpl.js";
 
 export class PreferencesCollectionRefImpl<Key, Value> implements PreferencesCollectionRef<Key, Value> {
@@ -7,18 +10,20 @@ export class PreferencesCollectionRefImpl<Key, Value> implements PreferencesColl
     }
 
     itemRef(key: Key) {
-        return new PreferencesItemRefImpl(this, key);
+        return new PreferencesItemRefImpl<Key, any>(this as any, key);
     }
 
-    items() {
+    async items() {
 
         const args = arguments;
-        const keys: Key[] = arguments.length > 0 && new Array(arguments.length).fill(undefined).map((value, index) => args[index]);
+        const keys = arguments.length > 0 ? new Array(arguments.length).fill(undefined).map((value, index) => args[index]) as Key[] : undefined;
 
         if (keys) {
             return this.container.items<Key, Value>(this.name, ...keys);
         } else if (arguments.length === 0) {
             return this.container.items<Key, Value>(this.name);
+        } else {
+            return [];
         }
     }
 
@@ -34,8 +39,8 @@ export class PreferencesCollectionRefImpl<Key, Value> implements PreferencesColl
         return this.container.exists(this.name, key);
     }
 
-    item(key: Key) {
-        const items = this.container.items(this.name, key);
+    async item(key: Key) {
+        const items = await this.container.items(this.name, key);
         return (items && items[0]) || undefined;
     }
 
@@ -55,14 +60,14 @@ export class PreferencesCollectionRefImpl<Key, Value> implements PreferencesColl
     values(): Promise<Value[]> {
 
         const args = arguments;
-        const keys: Key[] = arguments.length > 0 && new Array(arguments.length).fill(undefined).map((value, index) => args[index]);
+        const keys = arguments.length > 0 ? new Array(arguments.length).fill(undefined).map((value, index) => args[index]) as Key[] : undefined;
 
         return new Promise<Value[]>(async (resolve, reject) => {
 
             const values: Value[] = [];
 
             try {
-                let items: Promise<PreferencesItem<Key, Value>[]>;
+                let items: Promise<PreferencesItem<Key, Value>[]> | undefined;
                 if (keys) {
                     items = this.container.items<Key, Value>(this.name, ...keys);
                 } else if (args.length === 0) {

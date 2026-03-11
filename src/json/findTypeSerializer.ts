@@ -3,7 +3,7 @@ import {globalProviders} from "./globalProviders.js";
 import {Serializer} from "./Serializer.js";
 import {InternalTypeProviders, TypeProviders} from "./TypeProvider.js";
 
-export function findTypeSerializer(type: Type, typeProviders?: TypeProviders): Serializer {
+export function findTypeSerializer(type: Type, typeProviders?: TypeProviders): Serializer | undefined {
 
     if (!type || type === Object || type === Array) {
         return;

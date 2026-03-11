@@ -19,5 +19,5 @@ export declare class StoragePreferencesContainer implements PreferencesContainer
     items(collection: string, keysToFilter?: any): Promise<PreferencesItem<any, any>[]>;
     update<Key = any, Value = any>(collection: string, key: Key, changes: Partial<Value>): Promise<PreferencesItem<Key, Value>>;
     collection<Key, Value>(name: string): PreferencesCollectionRef<Key, Value>;
-    listen<Key, Value>(listener: (event: PreferencesItemEvent<any, any>) => void, collection?: string): () => void;
+    listen(listener: (event: PreferencesItemEvent<any, any>) => void, collection?: string): () => void;
 }

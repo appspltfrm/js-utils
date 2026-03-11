@@ -1,4 +1,5 @@
 export function implementTimestampInDate() {
+    // @ts-ignore
     if (Date.prototype.toMillis) {
         return;
     }

@@ -3,15 +3,15 @@
  */
 export declare class DateTimezone {
     static timezoneOffset(timezone: string, date?: Date): number;
-    static fromJSON(json: any): DateTimezone;
+    static fromJSON(json: any): DateTimezone | undefined;
     constructor(epoch: number, timezone?: string);
     constructor(date: Date, timezone?: string);
     readonly date: Date;
-    readonly timezone: string;
+    readonly timezone: string | undefined;
     epoch(): number;
     toJSON(): {
         "@type": string;
         date: number;
-        timezone: string;
+        timezone: string | undefined;
     };
 }

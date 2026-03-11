@@ -4,17 +4,17 @@ import {InternalType} from "./InternalType.js";
 import {SerializationOptions} from "./SerializationOptions.js";
 import {Serializer} from "./Serializer.js";
 
-export function serializeImpl(value: any, type: InternalType, options: SerializationOptions) {
+export function serializeImpl(value: any, type: InternalType | undefined, options?: SerializationOptions) {
     return serializeImplWithSerializer(value, type, null, options);
 }
 
-function serializeImplWithSerializer(value: any, type: InternalType, typeSerializer: Serializer | false, options: SerializationOptions) {
+function serializeImplWithSerializer(value: any, type: InternalType | undefined, typeSerializer: Serializer | false | null, options?: SerializationOptions) {
 
     if (value === null || value === undefined) {
         return value;
     } else {
 
-        const newArray = Array.isArray(value) ? [] : undefined;
+        const newArray: any[] | undefined = Array.isArray(value) ? [] : undefined;
         const serializer = typeSerializer instanceof Serializer ? typeSerializer : (typeSerializer !== false && findTypeSerializer(type ? type : (!newArray ? identifyType(value) : undefined), options?.typeProviders));
 
         for (const i of newArray ? value : [value]) {

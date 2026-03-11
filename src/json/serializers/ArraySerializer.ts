@@ -19,7 +19,7 @@ export class ArraySerializer<T = any> extends Serializer<T[]> {
         }
     }
 
-    readonly typeOrSerializer: Type | Serializer;
+    readonly typeOrSerializer: Type | Serializer | undefined;
 
     serialize(value: any, options?: SerializationOptions): any {
         const serializer = this.typeOrSerializer instanceof Serializer ? this.typeOrSerializer : undefined;

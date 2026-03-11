@@ -1,8 +1,26 @@
+/**
+ * Zaawansowana klasa bazowa dla typów wyliczeniowych w TypeScript.
+ * Rozwiązuje problemy ze standardowymi enumami, oferując pełną obiektowość i łatwą serializację.
+ *
+ * Przykład użycia:
+ * ```typescript
+ * class UserRole extends Enum {
+ *   static readonly ADMIN = new UserRole("ADMIN");
+ *   static readonly USER = new UserRole("USER");
+ * }
+ * ```
+ */
 export class Enum {
     name;
+    /**
+     * Zwraca listę wszystkich zarejestrowanych wartości dla danego Enuma.
+     */
     static values() {
         return valuesRef(this).slice();
     }
+    /**
+     * Tworzy instancję Enuma na podstawie wartości JSON (string lub obiekt z polem name).
+     */
     static fromJSON(value, unknownFactory) {
         let name;
         if (typeof value === "string") {
@@ -23,6 +41,10 @@ export class Enum {
         }
         throw new Error("Invalid value " + JSON.stringify(value) + " for enum " + jsonTypeName(this));
     }
+    /**
+     * Zwraca instancję Enuma na podstawie nazwy.
+     * @throws Błąd, jeśli nazwa nie odpowiada żadnej zdefiniowanej wartości.
+     */
     static valueOf(name, unknownFactory) {
         CHECK_NAME: if (name) {
             if (typeof name === "object" && name) {
@@ -48,6 +70,9 @@ export class Enum {
         this.name = name;
         addValue(this.constructor, this);
     }
+    /**
+     * Porównuje obecną wartość Enuma z inną wartością (string, Enum lub JSON).
+     */
     equals(value) {
         if (value === null || value === undefined || typeof value === "function" || typeof value === "number" || typeof value === "boolean") {
             return false;
@@ -70,11 +95,13 @@ export class Enum {
 function addValue(enumClass, value) {
     valuesRef(enumClass).push(value);
 }
+const enumValuesProp = Symbol("@appspltfrm/js-utils/core/Enum:values");
 function valuesRef(enumClass) {
-    if (!enumClass["__enumValues"]) {
-        enumClass["__enumValues"] = [];
+    const cl = enumClass;
+    if (!cl[enumValuesProp]) {
+        cl[enumValuesProp] = [];
     }
-    return enumClass["__enumValues"];
+    return cl[enumValuesProp];
 }
 function jsonTypeName(instanceOrClass) {
     let type;
@@ -84,6 +111,6 @@ function jsonTypeName(instanceOrClass) {
     else {
         type = instanceOrClass;
     }
-    return type["jsonTypeName"] || type.name;
+    return type.jsonTypeName || type.name;
 }
 //# sourceMappingURL=Enum.js.map

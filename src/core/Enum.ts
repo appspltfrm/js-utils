@@ -19,15 +19,33 @@ export type EnumValueOfValue = string | EnumValueJson;
 export type EnumStaticName<TypeOfEnumClass extends EnumStatic<any>> = Extract<Exclude<keyof TypeOfEnumClass, "prototype" | "values" | "fromJSON" | "valueOf" | "jsonTypeName">, string>;
 export type EnumValueName<TypeOfEnumClass extends EnumStatic<any>> = Extract<Exclude<keyof OmitFunctions<TypeOfEnumClass>, "prototype" | "jsonTypeName">, string>;
 
+/**
+ * Zaawansowana klasa bazowa dla typów wyliczeniowych w TypeScript.
+ * Rozwiązuje problemy ze standardowymi enumami, oferując pełną obiektowość i łatwą serializację.
+ * 
+ * Przykład użycia:
+ * ```typescript
+ * class UserRole extends Enum {
+ *   static readonly ADMIN = new UserRole("ADMIN");
+ *   static readonly USER = new UserRole("USER");
+ * }
+ * ```
+ */
 export abstract class Enum {
 
+    /**
+     * Zwraca listę wszystkich zarejestrowanych wartości dla danego Enuma.
+     */
     protected static values(): Enum[] {
         return valuesRef(this).slice();
     }
 
+    /**
+     * Tworzy instancję Enuma na podstawie wartości JSON (string lub obiekt z polem name).
+     */
     protected static fromJSON(value: EnumFromJSONValue, unknownFactory?: (value: EnumFromJSONValue) => Enum): Enum {
 
-        let name: string;
+        let name: string | undefined;
 
         if (typeof value === "string") {
             name = value;
@@ -50,6 +68,10 @@ export abstract class Enum {
         throw new Error("Invalid value " + JSON.stringify(value) + " for enum " + jsonTypeName(this));
     }
 
+    /**
+     * Zwraca instancję Enuma na podstawie nazwy.
+     * @throws Błąd, jeśli nazwa nie odpowiada żadnej zdefiniowanej wartości.
+     */
     protected static valueOf(name: EnumValueOfValue, unknownFactory?: (name: EnumValueOfValue) => Enum): Enum {
 
         CHECK_NAME: if (name) {
@@ -80,6 +102,9 @@ export abstract class Enum {
         addValue(this.constructor, this as any);
     }
 
+    /**
+     * Porównuje obecną wartość Enuma z inną wartością (string, Enum lub JSON).
+     */
     equals(value: string | Enum | EnumValueJson): boolean {
 
         if (value === null || value === undefined || typeof value === "function" || typeof value === "number" || typeof value === "boolean") {
@@ -104,17 +129,20 @@ function addValue<EnumClass extends Enum>(enumClass: Type<EnumClass>, value: Enu
     valuesRef(enumClass).push(value);
 }
 
+const enumValuesProp = Symbol("@appspltfrm/js-utils/core/Enum:values")
+
 function valuesRef<EnumClass extends Enum>(enumClass: Type<EnumClass>): EnumClass[] {
-    if (!enumClass["__enumValues"]) {
-        enumClass["__enumValues"] = [];
+    const cl = enumClass as any;
+    if (!cl[enumValuesProp]) {
+        cl[enumValuesProp] = [];
     }
 
-    return enumClass["__enumValues"];
+    return cl[enumValuesProp];
 }
 
 function jsonTypeName(instanceOrClass: Type | Enum): string {
 
-    let type: Type;
+    let type: Type & {jsonTypeName?: string};
 
     if (instanceOrClass instanceof Enum) {
         type = instanceOrClass.constructor;
@@ -122,5 +150,5 @@ function jsonTypeName(instanceOrClass: Type | Enum): string {
         type = instanceOrClass;
     }
 
-    return type["jsonTypeName"] || type.name;
+    return type.jsonTypeName || type.name;
 }

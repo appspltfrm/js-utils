@@ -9,13 +9,14 @@ import {SerializationOptions} from "./SerializationOptions.js";
 import {serializeImpl} from "./serializeImpl.js";
 import {Serializer} from "./Serializer.js";
 import {ArraySerializer} from "./serializers/ArraySerializer.js";
+import {TypeProvider} from "./TypeProvider.js";
 import {unserializeImpl} from "./unserializeImpl.js";
 
 export function toJsonImpl(this: any, options?: SerializationOptions) {
 
     const prototypesTree = getPrototypesTree(this);
     const typesTree = getTypesTree(prototypesTree);
-    const serializationOptions = {typeProviders: [].concat(options?.typeProviders ?? [], typesTree[0].__jsonTypes ?? [])};
+    const serializationOptions = {typeProviders: ([] as TypeProvider[]).concat(options?.typeProviders ?? [], typesTree[0].__jsonTypes ?? [])};
 
     let json: any = {};
 
@@ -82,7 +83,7 @@ export function fromJsonImpl(this: AssignableType, json: any, options?: Serializ
     if (!instance && internalType.__jsonSubtypes) {
         for (const subtype of internalType.__jsonSubtypes) {
 
-            let matchedType: InternalType & AssignableType;
+            let matchedType: (InternalType & AssignableType) | undefined;
 
             if (subtype.matcher) {
 
@@ -98,7 +99,7 @@ export function fromJsonImpl(this: AssignableType, json: any, options?: Serializ
             if (matchedType && matchedType !== this) {
 
                 if (matchedType.hasOwnProperty("fromJSON")) {
-                    return matchedType.fromJSON(json, options);
+                    return matchedType.fromJSON!(json, options);
                 }
 
                 instance = new matchedType;
@@ -113,7 +114,7 @@ export function fromJsonImpl(this: AssignableType, json: any, options?: Serializ
 
     const prototypesTree = getPrototypesTree(instance);
     const typesTree = getTypesTree(prototypesTree);
-    const serializationOptions = {typeProviders: [].concat(options?.typeProviders ?? [], typesTree[0].__jsonTypes ?? [])};
+    const serializationOptions = {typeProviders: ([] as TypeProvider[]).concat(options?.typeProviders ?? [], typesTree[0].__jsonTypes ?? [])};
 
     const properties = getDeclaredProperties(instance, typesTree);
 

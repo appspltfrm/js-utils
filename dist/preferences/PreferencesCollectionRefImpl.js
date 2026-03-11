@@ -9,14 +9,17 @@ export class PreferencesCollectionRefImpl {
     itemRef(key) {
         return new PreferencesItemRefImpl(this, key);
     }
-    items() {
+    async items() {
         const args = arguments;
-        const keys = arguments.length > 0 && new Array(arguments.length).fill(undefined).map((value, index) => args[index]);
+        const keys = arguments.length > 0 ? new Array(arguments.length).fill(undefined).map((value, index) => args[index]) : undefined;
         if (keys) {
             return this.container.items(this.name, ...keys);
         }
         else if (arguments.length === 0) {
             return this.container.items(this.name);
+        }
+        else {
+            return [];
         }
     }
     delete(...keys) {
@@ -28,8 +31,8 @@ export class PreferencesCollectionRefImpl {
     exists(key) {
         return this.container.exists(this.name, key);
     }
-    item(key) {
-        const items = this.container.items(this.name, key);
+    async item(key) {
+        const items = await this.container.items(this.name, key);
         return (items && items[0]) || undefined;
     }
     set(key, value, options) {
@@ -44,7 +47,7 @@ export class PreferencesCollectionRefImpl {
     }
     values() {
         const args = arguments;
-        const keys = arguments.length > 0 && new Array(arguments.length).fill(undefined).map((value, index) => args[index]);
+        const keys = arguments.length > 0 ? new Array(arguments.length).fill(undefined).map((value, index) => args[index]) : undefined;
         return new Promise(async (resolve, reject) => {
             const values = [];
             try {

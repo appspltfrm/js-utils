@@ -17,7 +17,7 @@ export function setupSerialization(type: Type) {
     if (!type.hasOwnProperty("fromJSON")) {
         internalType.__jsonFromJson = true;
         internalType.fromJSON = function (json: any, options: any) {
-            return fromJsonImpl.call(this, json, options);
+            return fromJsonImpl.call(this as any, json, options);
         }
     }
 }

@@ -2,14 +2,14 @@
 
 const WA = globalThis.WebAssembly;
 const exists = typeof WA === 'object';
-const has = (entity) => typeof entity !== 'undefined';
-const u8 = (...bytes) => Uint8Array.of(0, 97, 115, 109, 1, 0, 0, 0, ...bytes);
+const has = (entity: any) => typeof entity !== 'undefined';
+const u8 = (...bytes: number[]) => Uint8Array.of(0, 97, 115, 109, 1, 0, 0, 0, ...bytes);
 // const u16  = (...bytes: number[]) => Uint16Array.of(24832, 28019, 1, 0, ...bytes)
-const u32 = (...bytes) => Uint32Array.of(0x6D736100, 1, ...bytes);
-const u32a = (...bytes) => u32(1610679297, 33751040, ...bytes, 40239360, 259);
-const u8a = (...bytes) => u8(1, 4, 1, 96, 0, 0, 3, 2, 1, 0, ...bytes, 11, 0, 10, 4, 110, 97, 109, 101, 2, 3, 1, 0, 0);
-const u16a = (...bytes) => Uint16Array.of(24832, 28019, 1, 0, 1025, 24577, 0, 515, 1, ...bytes);
-const u16b = (...bytes) => u16a(...bytes, 2842, 4096, 28164, 28001, 357, 260, 256, 560, 259, 0);
+const u32 = (...bytes: number[]) => Uint32Array.of(0x6D736100, 1, ...bytes);
+const u32a = (...bytes: number[]) => u32(1610679297, 33751040, ...bytes, 40239360, 259);
+const u8a = (...bytes: number[]) => u8(1, 4, 1, 96, 0, 0, 3, 2, 1, 0, ...bytes, 11, 0, 10, 4, 110, 97, 109, 101, 2, 3, 1, 0, 0);
+const u16a = (...bytes: number[]) => Uint16Array.of(24832, 28019, 1, 0, 1025, 24577, 0, 515, 1, ...bytes);
+const u16b = (...bytes: number[]) => u16a(...bytes, 2842, 4096, 28164, 28001, 357, 260, 256, 560, 259, 0);
 const cache = new WeakMap();
 const bigIntWasm = u32(1610679553, 58589440, 117440770, 805372165, 101318656, 1107297281, 268438272, 1835101700, 17039717, 36700416, 259);
 const memory64Wasm = u8(5, 3, 1, 4, 1, 0, 8, 4, 110, 97, 109, 101, 2, 1, 0);
@@ -24,7 +24,7 @@ const threadsWasm = u8a(5, 4, 1, 3, 1, 1, 10, 7, 1, 5, 0, 254, 3, 0);
 const simdWasm = u32a(84344833, 6357249, 17369600, 4259847, 186257917, 1845758464);
 const referencesWasm = u8a(10, 7, 1, 5, 0, 208, 112, 26);
 
-function check(wasm, exec?: boolean) {
+function check(wasm: any, exec?: boolean) {
     if (!exists) {
         return false;
     }

@@ -2,20 +2,20 @@
     "extends": "../tsconfig.json",
     "compilerOptions": {
         "outDir": "../dist-test",
-        "module": "NodeNext",
-        "moduleResolution": "NodeNext",
-        "paths": {
-            "@appspltfrm/js-utils": ["src"],
-            "@appspltfrm/js-utils/*": ["src/*"]
-        },
-        "sourceMap": true,
-        "importHelpers": true,
+        "rootDir": "..",
+        "noEmit": false,
         "plugins": [
-            {"transform": "./dist/json/TsTransformer/index.js"}
+            {
+                "transform": "../dist/json/TsTransformer/index.js",
+                "after": true
+            }
         ]
     },
+    "include": [
+        "**/*.ts",
+        "../src/**/*.ts"
+    ],
     "exclude": [
-        "dist",
-        "node_modules"
+        "../node_modules"
     ]
 }

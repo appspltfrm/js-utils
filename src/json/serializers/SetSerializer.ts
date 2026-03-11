@@ -18,7 +18,7 @@ export class SetSerializer<T> extends Serializer<T[]> {
         }
     }
 
-    private readonly typeOrSerializer: Type | Serializer;
+    private readonly typeOrSerializer: Type | Serializer | undefined;
 
     serialize(value: any, options?: SerializationOptions): any {
 

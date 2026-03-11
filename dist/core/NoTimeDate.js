@@ -2,6 +2,10 @@ import { clone } from "./clone.js";
 /**
  * A date, that points to absolute date - no time, no time zone, just year-month-date.
  */
+/**
+ * Klasa reprezentująca datę bez komponentu czasu.
+ * Wszystkie operacje na tej dacie ignorują godziny, minuty i sekundy (są one zawsze zerowane).
+ */
 export class NoTimeDate extends Date {
     static jsonTypeName = "NoTimeDate";
     static fromJSON(json) {

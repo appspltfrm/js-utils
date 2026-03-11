@@ -1,9 +1,9 @@
 import {Observable, Subscriber} from "rxjs";
 import {map} from "rxjs/operators";
-import {PreferencesCollectionRefImpl} from "../PreferencesCollectionRefImpl";
-import {deepClone} from "../deepClone";
-import {PreferencesCollectionRef, PreferencesItem, PreferencesItemEvent} from "../interfaces";
-import {PreferencesItemImpl} from "../PreferencesItemImpl";
+import {deepClone} from "../deepClone.js";
+import {PreferencesCollectionRef, PreferencesItem, PreferencesItemEvent} from "../interfaces.js";
+import {PreferencesCollectionRefImpl} from "../PreferencesCollectionRefImpl.js";
+import {PreferencesItemImpl} from "../PreferencesItemImpl.js";
 
 class CollectionItemsObserver<Key, Value> extends Observable<PreferencesItem<Key, Value>[]> {
 
@@ -11,7 +11,7 @@ class CollectionItemsObserver<Key, Value> extends Observable<PreferencesItem<Key
         super(subscriber => this.onSubscribe(subscriber));
     }
 
-    private unlisten: () => void;
+    private unlisten: (() => void) | undefined;
 
     private readonly subscribers: Subscriber<PreferencesItem<Key, Value>[]>[] = [];
 
@@ -51,7 +51,7 @@ class CollectionItemsObserver<Key, Value> extends Observable<PreferencesItem<Key
 
 }
 
-declare module "../interfaces" {
+declare module "../interfaces.js" {
 
     interface PreferencesCollectionRef<Key, Value> {
         observeItems(): Observable<PreferencesItem<Key, Value>[]>;
@@ -60,7 +60,7 @@ declare module "../interfaces" {
 
 }
 
-declare module "../PreferencesCollectionRefImpl" {
+declare module "../PreferencesCollectionRefImpl.js" {
 
     interface PreferencesCollectionRefImpl<Key, Value> extends PreferencesCollectionRef<Key, Value> {
     }

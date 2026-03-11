@@ -29,7 +29,7 @@ export class DateTimezone {
 
         if (typeof dateOrEpoch === "number") {
             this.date = new Date(dateOrEpoch);
-        } else if (dateOrEpoch instanceof Date) {
+        } else {
             this.date = new Date(dateOrEpoch.getTime());
         }
 
@@ -37,7 +37,7 @@ export class DateTimezone {
 
     readonly date: Date;
 
-    readonly timezone: string;
+    readonly timezone: string | undefined;
 
     epoch() {
         return this.date.valueOf();

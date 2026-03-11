@@ -43,7 +43,7 @@ export class MemoryPreferencesContainer {
     }
     get(collection, key) {
         const item = this.memory.find(item => item.collection === collection && deepEqual(item.key, key));
-        return Promise.resolve(this.newItem(item || null));
+        return Promise.resolve(this.newItem(item || undefined));
     }
     deleteAll(collection) {
         const deleted = [];
@@ -85,10 +85,10 @@ export class MemoryPreferencesContainer {
     exists(collection, key) {
         return Promise.resolve(!!this.memory.find(item => item.collection === collection && deepEqual(item.key, key)));
     }
-    items(collection, keysToFilter) {
+    async items(collection, keysToFilter) {
         const items = [];
         const args = arguments;
-        const keys = arguments.length > 1 && new Array(arguments.length - 1).fill(undefined).map((value, index) => args[index + 1]);
+        const keys = arguments.length > 1 ? new Array(arguments.length - 1).fill(undefined).map((value, index) => args[index + 1]) : undefined;
         if (keys) {
             KEYS: for (const key of keys) {
                 for (const item of this.memory) {

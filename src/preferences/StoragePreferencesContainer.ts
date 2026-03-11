@@ -24,11 +24,11 @@ export class StoragePreferencesContainer implements PreferencesContainer {
     protected readonly events: ContainerEventsManager = new ContainerEventsManager();
 
     protected fireEvent(event: Partial<PreferencesItemEvent<any, any>>) {
-        this.events.fireEvent(Object.assign(event, {ref: new PreferencesCollectionRefImpl(this, event.collection).itemRef(event.key)}) as PreferencesItemEvent<any, any>);
+        this.events.fireEvent(Object.assign(event, {ref: new PreferencesCollectionRefImpl(this, event.collection!).itemRef(event.key)}) as PreferencesItemEvent<any, any>);
     }
 
     private getStorageItem(storageKey: string) {
-        return JSON.parse(this.storage.getItem(storageKey)) as StorageItem;
+        return JSON.parse(this.storage.getItem(storageKey)!) as StorageItem;
     }
 
     private setStorageItem(storageKey: string, item: StorageItem) {
@@ -39,7 +39,7 @@ export class StoragePreferencesContainer implements PreferencesContainer {
         return JSON.stringify([collection, key]);
     }
 
-    private collectionAndKey(storageKey: string): [string, any] {
+    private collectionAndKey(storageKey: string): [string, any] | null {
 
         if (storageKey.startsWith("[") && storageKey.endsWith("]")) {
             try {
@@ -61,7 +61,7 @@ export class StoragePreferencesContainer implements PreferencesContainer {
         return undefined;
     }
 
-    set(collection: string, key: any, value: any, options?: PreferencesSetOptions) {
+    async set(collection: string, key: any, value: any, options?: PreferencesSetOptions) {
 
         const itemKey = this.storageKey(collection, key);
 
@@ -101,12 +101,12 @@ export class StoragePreferencesContainer implements PreferencesContainer {
             });
         }
 
-        return Promise.resolve(this.newItem({key, collection, value: item.value, lastUpdate: item.lastUpdate}));
+        return Promise.resolve(this.newItem({key, collection, value: item.value, lastUpdate: item.lastUpdate!})!);
     }
 
     get(collection: string, key: any) {
         const item = this.getStorageItem(this.storageKey(collection, key));
-        return Promise.resolve(this.newItem(item && {collection, key, value: item.value, lastUpdate: item.lastUpdate}));
+        return Promise.resolve(this.newItem(item && {collection, key, value: item.value, lastUpdate: item.lastUpdate!})!);
     }
 
     delete(collection: string, ...keys: any[]) {
@@ -131,7 +131,7 @@ export class StoragePreferencesContainer implements PreferencesContainer {
                         oldValue: deepClone(item.value)
                     });
 
-                    deleted.push(this.newItem({collection, key, value: item.value, lastUpdate: item.lastUpdate}));
+                    deleted.push(this.newItem({collection, key, value: item.value, lastUpdate: item.lastUpdate!})!);
 
                     continue KEYS;
                 }
@@ -146,7 +146,7 @@ export class StoragePreferencesContainer implements PreferencesContainer {
         const deleted: PreferencesItem[] = [];
 
         for (let i = 0; i < this.storage.length; i++) {
-            const storageKey = this.storage.key(i);
+            const storageKey = this.storage.key(i)!;
             const collectionAndKey = this.collectionAndKey(storageKey);
 
             if (collectionAndKey && collectionAndKey[0] === collection) {
@@ -161,7 +161,7 @@ export class StoragePreferencesContainer implements PreferencesContainer {
                     oldValue: deepClone(item.value)
                 });
 
-                deleted.push(this.newItem({collection, key: collectionAndKey[1], value: item.value, lastUpdate: item.lastUpdate}));
+                deleted.push(this.newItem({collection, key: collectionAndKey[1], value: item.value, lastUpdate: item.lastUpdate!})!);
             }
         }
 
@@ -178,7 +178,7 @@ export class StoragePreferencesContainer implements PreferencesContainer {
         const items: PreferencesItem[] = [];
 
         const args = arguments;
-        const keys: any[] = arguments.length > 1 && new Array(arguments.length - 1).fill(undefined).map((value, index) => args[index + 1]);
+        const keys = arguments.length > 1 ? new Array(arguments.length - 1).fill(undefined).map((value, index) => args[index + 1]) : undefined;
 
         if (keys) {
 
@@ -190,7 +190,7 @@ export class StoragePreferencesContainer implements PreferencesContainer {
 
                     if (itemKey === storageKey) {
                         const item = this.getStorageItem(storageKey);
-                        items.push(this.newItem({collection, key, value: item.value, lastUpdate: item.lastUpdate}));
+                        items.push(this.newItem({collection, key, value: item.value, lastUpdate: item.lastUpdate!})!);
                         continue KEYS;
                     }
                 }
@@ -199,12 +199,12 @@ export class StoragePreferencesContainer implements PreferencesContainer {
         } else if (arguments.length === 1) {
 
             for (let i = 0; i < this.storage.length; i++) {
-                const storageKey = this.storage.key(i);
+                const storageKey = this.storage.key(i)!;
                 const collectionAndKey = this.collectionAndKey(storageKey);
 
                 if (collectionAndKey && collectionAndKey[0] === collection) {
                     const item = this.getStorageItem(storageKey);
-                    items.push(this.newItem({collection, key: collectionAndKey[1], value: item.value, lastUpdate: item.lastUpdate}));
+                    items.push(this.newItem({collection, key: collectionAndKey[1], value: item.value, lastUpdate: item.lastUpdate!})!);
                 }
             }
         }
@@ -238,7 +238,7 @@ export class StoragePreferencesContainer implements PreferencesContainer {
                 this.setStorageItem(storageKey, {value: newValue, lastUpdate});
             }
 
-            return Promise.resolve(this.newItem({collection, key, value: newValue, lastUpdate}));
+            return Promise.resolve(this.newItem({collection, key, value: newValue, lastUpdate})!);
 
         } else {
             return Promise.reject(new Error("Key not exists"));
@@ -249,7 +249,7 @@ export class StoragePreferencesContainer implements PreferencesContainer {
         return new PreferencesCollectionRefImpl(this, name);
     }
 
-    listen<Key, Value>(listener: (event: PreferencesItemEvent<any, any>) => void, collection?: string): () => void {
+    listen(listener: (event: PreferencesItemEvent<any, any>) => void, collection?: string): () => void {
         return this.events.addListener(listener, collection);
     }
 

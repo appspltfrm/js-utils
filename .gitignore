@@ -1,9 +1,0 @@
-node_modules
-npm-debug.log
-.idea/*
-!.idea/.name
-dist-test
-.tmp/
-.yarn
-.yarn.lock
-.DS_Store

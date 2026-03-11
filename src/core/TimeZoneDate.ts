@@ -2,6 +2,9 @@ import {clone, Clone} from "./clone.js";
 
 type TimeZone = string | "current" | undefined | null;
 
+/**
+ * Klasa reprezentująca datę z przypisaną konkretną strefą czasową.
+ */
 export class TimeZoneDate extends Date implements Clone<TimeZoneDate> {
 
     static readonly jsonTypeName = "TimeZoneDate";
@@ -42,15 +45,15 @@ export class TimeZoneDate extends Date implements Clone<TimeZoneDate> {
     }
 
     toString() {
-        return new Intl.DateTimeFormat(undefined, {timeZone: this.timeZone, timeZoneName: "short"}).format(this);
+        return new Intl.DateTimeFormat(undefined, {timeZone: this.timeZone || undefined, timeZoneName: "short"}).format(this);
     }
 
     toJSON(): any {
 
-        const json = {"@type": "TimeZoneDate", date: super.toJSON()};
+        const json: any = {"@type": "TimeZoneDate", date: super.toJSON()};
 
         if (this.timeZone) {
-            json["timeZone"] = this.timeZone;
+            json.timeZone = this.timeZone;
         }
 
         return json;

@@ -1,6 +1,14 @@
 import { Serializer } from "../Serializer.js";
 import { setupSerialization } from "../setupSerialization.js";
 import "reflect-metadata";
+/**
+ * Dekorator definiujący właściwości pola podczas serializacji.
+ * Pozwala określić typ pola, jego nazwę w formacie JSON oraz dodatkowe opcje.
+ *
+ * @param type Klasa lub Serializer używany do obsługi tego pola.
+ * @param jsonName Opcjonalna nazwa pola w JSON (jeśli inna niż w klasie).
+ * @param options Dodatkowe opcje serializacji.
+ */
 export function property() {
     let jsonType;
     let jsonName;
@@ -20,7 +28,7 @@ export function property() {
         const type = classPrototype.constructor;
         const config = Object.assign({
             propertyType: jsonType,
-            propertyDesignType: !jsonType && Reflect.getMetadata("design:type", classPrototype, propertyName),
+            propertyDesignType: !jsonType ? Reflect.getMetadata("design:type", classPrototype, propertyName) : undefined,
             propertyJsonName: jsonName
         }, options);
         setupSerialization(type);

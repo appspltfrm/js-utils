@@ -3,7 +3,7 @@ import { SerializationOptions } from "../SerializationOptions.js";
 import { Serializer } from "../Serializer.js";
 export declare class ArraySerializer<T = any> extends Serializer<T[]> {
     constructor(valueTypeOrSerializer?: Type<T> | Serializer<T>);
-    readonly typeOrSerializer: Type | Serializer;
+    readonly typeOrSerializer: Type | Serializer | undefined;
     serialize(value: any, options?: SerializationOptions): any;
     unserialize(json: any, options?: SerializationOptions): any;
 }

@@ -6,7 +6,7 @@ export class ContainerEventsManager {
 
     private listeners: {listener: PreferencesItemEventListener, collection?: string}[] = [];
 
-    addListener(listener: PreferencesItemEventListener, collection: string) {
+    addListener(listener: PreferencesItemEventListener, collection?: string) {
         this.listeners.push({listener, collection});
 
         return () => {

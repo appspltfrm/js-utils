@@ -1,19 +1,19 @@
 {
   "name": "@appspltfrm/js-utils",
-  "version": "2.0.0",
-  "author": "Unipla",
   "type": "module",
+  "sideEffects": false,
   "scripts": {
-    "build": "node-utils-file-system-glob-delete \"dist/**/*\" && npm run build:esm && npm run build:TsTransformer",
-    "build:esm": "tsc -p tsconfig.build.json",
+    "build": "node-utils-file-system-glob-delete \"dist/**/*\" && tsc -p tsconfig.json && npm run build:TsTransformer",
     "build:TsTransformer": "tsc -p src/json/TsTransformer/tsconfig.json --module commonjs --target esnext --moduleResolution node --outDir dist && node-utils-file-system-glob-copy src dist \"**/package.json\"",
     "watch:TsTransformer": "tsc --watch -p src/json/TsTransformer/tsconfig.json -m commonjs -t es2015 --outDir dist",
-    "build:test": "node-utils-file-system-glob-delete \"dist-test/**/*\" && ttsc -P test/tsconfig.json",
     "test:json": "tsx --tsconfig test/tsconfig.json test/json/test.ts",
-    "test:dates": "tsx --tsconfig test/tsconfig.json test/core/dates.ts"
+    "test:dates": "tsx --tsconfig test/tsconfig.json test/core/dates.ts",
+    "release": "../../releases/release.mjs js-utils"
+  },
+  "devDependencies": {
+    "@appspltfrm/node-utils": "github:appspltfrm/node-utils"
   },
   "dependencies": {
-    "@appspltfrm/node-utils": "github:appspltfrm/node-utils",
     "reflect-metadata": "^0.2.2"
   },
   "optionalDependencies": {
@@ -21,34 +21,17 @@
     "fast-equals": "^5.0.0",
     "rxjs": "^7.4.0"
   },
-  "devDependencies": {
-    "ts-patch": "^3.2.1",
-    "tsconfig-paths": "^4.2.0",
-    "tsx": "^4.19.2",
-    "typescript": "^5.6.3"
-  },
   "exports": {
-    "./core": {
-      "types": "./dist/core/public.d.ts",
-      "default": "./dist/core/public.js"
+    ".": {
+      "development": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
     },
-    "./json": {
-      "types": "./dist/json/public.d.ts",
-      "default": "./dist/json/public.js"
-    },
-    "./json/TsTransformer": {
-      "types": "./dist/json/TsTransformer/index.d.ts",
-      "default": "./dist/json/TsTransformer/index.js"
-    },
-    "./preferences": {
-      "types": "./dist/preferences/public.d.ts",
-      "default": "./dist/preferences/public.js"
-    },
-    "./preferences/rxjs": {
-      "types": "./dist/preferences/rxjs/public.d.ts",
-      "default": "./dist/preferences/rxjs/public.js"
+    "./*": {
+      "development": "./src/*/index.ts",
+      "types": "./dist/*/index.d.ts",
+      "default": "./dist/*/index.js"
     }
   },
-  "sideEffects": false,
-  "packageManager": "yarn@4.9.2"
+  "version": "0.0.1"
 }

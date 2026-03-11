@@ -4,6 +4,10 @@ import {clone, Clone} from "./clone.js";
  * A date, that points date-time always in local time.
  * It means, that UTC date/time will be shown in every time zone.
  */
+/**
+ * Klasa reprezentująca datę i czas, która jest zawsze interpretowana w czasie lokalnym.
+ * Oznacza to, że te same wartości UTC będą wyświetlane identycznie w każdej strefie czasowej.
+ */
 export class LocalDate extends Date implements Clone<LocalDate> {
 
     static readonly jsonTypeName = "LocalDate";
@@ -24,7 +28,7 @@ export class LocalDate extends Date implements Clone<LocalDate> {
 
     constructor(year: number, month: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number);
 
-    constructor(valueOrYear?: number | string | Date, month?, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number) {
+    constructor(valueOrYear?: number | string | Date, month?: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number) {
 
         if (typeof month === "number") {
             super(Date.UTC(valueOrYear as number, month, date, hours, minutes, seconds, ms));

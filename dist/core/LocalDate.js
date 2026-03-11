@@ -3,6 +3,10 @@ import { clone } from "./clone.js";
  * A date, that points date-time always in local time.
  * It means, that UTC date/time will be shown in every time zone.
  */
+/**
+ * Klasa reprezentująca datę i czas, która jest zawsze interpretowana w czasie lokalnym.
+ * Oznacza to, że te same wartości UTC będą wyświetlane identycznie w każdej strefie czasowej.
+ */
 export class LocalDate extends Date {
     static jsonTypeName = "LocalDate";
     static fromJSON(json) {

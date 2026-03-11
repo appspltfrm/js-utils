@@ -6,7 +6,7 @@
  * @returns {object} New object with merged key/values
  */
 export function deepMerge(...objects) {
-    const isObject = obj => obj && typeof obj === "object";
+    const isObject = (obj) => obj && typeof obj === "object";
     return objects.reduce((prev, obj) => {
         Object.keys(obj).forEach(key => {
             const pVal = prev[key];

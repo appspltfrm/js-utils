@@ -27,10 +27,12 @@ export class MemoryPreferencesContainer implements PreferencesContainer {
     protected readonly events: ContainerEventsManager = new ContainerEventsManager();
 
     protected fireEvent(event: Partial<PreferencesItemEvent<any, any>>) {
-        this.events.fireEvent(Object.assign(event, {ref: new PreferencesCollectionRefImpl(this, event.collection).itemRef(event.key)}) as PreferencesItemEvent<any, any>);
+        this.events.fireEvent(Object.assign(event, {ref: new PreferencesCollectionRefImpl(this, event.collection!).itemRef(event.key)}) as PreferencesItemEvent<any, any>);
     }
 
-    private newItem(item: MemoryPreferencesContainerItem) {
+    private newItem(item: MemoryPreferencesContainerItem): PreferencesItemImpl<any, any>;
+    private newItem(item: MemoryPreferencesContainerItem | undefined): PreferencesItemImpl<any, any> | undefined;
+    private newItem(item: MemoryPreferencesContainerItem | undefined): PreferencesItemImpl<any, any> | undefined {
         if (item) {
             return new PreferencesItemImpl(this.collection(item.collection), deepClone(item.key), deepClone(item.value), item.lastUpdate);
         }
@@ -56,7 +58,7 @@ export class MemoryPreferencesContainer implements PreferencesContainer {
                 oldValue: deepClone(old)
             });
 
-            return Promise.resolve(this.newItem({...item, ...{lastUpdate: Date.now()}}));
+            return Promise.resolve(this.newItem({...item, ...{lastUpdate: Date.now()}})!);
 
         } else {
 
@@ -69,13 +71,13 @@ export class MemoryPreferencesContainer implements PreferencesContainer {
                 newValue: deepClone(value)
             });
 
-            return Promise.resolve(this.newItem(item));
+            return Promise.resolve(this.newItem(item)!);
         }
     }
 
     get(collection: string, key: any) {
         const item = this.memory.find(item => item.collection === collection && deepEqual(item.key, key));
-        return Promise.resolve(this.newItem(item || null));
+        return Promise.resolve(this.newItem(item || undefined));
     }
 
     deleteAll(collection: string) {
@@ -95,7 +97,7 @@ export class MemoryPreferencesContainer implements PreferencesContainer {
                         oldValue: deepClone(item.value)
                     });
 
-                    deleted.push(this.newItem(item));
+                    deleted.push(this.newItem(item)!);
                 }
             }
         }
@@ -122,7 +124,7 @@ export class MemoryPreferencesContainer implements PreferencesContainer {
                             oldValue: deepClone(item.value)
                         });
 
-                        deleted.push(this.newItem(item));
+                        deleted.push(this.newItem(item)!);
                     }
 
                     continue KEYS;
@@ -137,12 +139,12 @@ export class MemoryPreferencesContainer implements PreferencesContainer {
         return Promise.resolve(!!this.memory.find(item => item.collection === collection && deepEqual(item.key, key)));
     }
 
-    items(collection: string, keysToFilter?: any) {
+    async items(collection: string, keysToFilter?: any) {
 
         const items: PreferencesItem[] = [];
 
         const args = arguments;
-        const keys: any[] = arguments.length > 1 && new Array(arguments.length - 1).fill(undefined).map((value, index) => args[index + 1]);
+        const keys = arguments.length > 1 ? new Array(arguments.length - 1).fill(undefined).map((value, index) => args[index + 1]) : undefined;
 
         if (keys) {
 
@@ -151,7 +153,7 @@ export class MemoryPreferencesContainer implements PreferencesContainer {
                 for (const item of this.memory) {
 
                     if (item.collection === collection && deepEqual(item.key, key)) {
-                        items.push(this.newItem(item));
+                        items.push(this.newItem(item)!);
                         continue KEYS;
                     }
                 }
@@ -161,7 +163,7 @@ export class MemoryPreferencesContainer implements PreferencesContainer {
 
             for (const item of this.memory) {
                 if (item.collection === collection) {
-                    items.push(this.newItem(item));
+                    items.push(this.newItem(item)!);
                 }
             }
         }
@@ -200,7 +202,7 @@ export class MemoryPreferencesContainer implements PreferencesContainer {
         return new PreferencesCollectionRefImpl(this, name);
     }
 
-    listen<Key, Value>(listener: PreferencesItemEventListener, collection?: string): () => void {
+    listen(listener: PreferencesItemEventListener, collection?: string): () => void {
         return this.events.addListener(listener, collection);
     }
 }

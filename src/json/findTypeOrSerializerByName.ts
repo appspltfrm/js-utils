@@ -3,7 +3,7 @@ import {globalProviders} from "./globalProviders.js";
 import {Serializer} from "./Serializer.js";
 import {TypeNameProvider, TypeNameSerializerProvider, TypeProviders, TypeWithJsonTypeName} from "./TypeProvider.js";
 
-export function findTypeOrSerializerByName(name: string | {"@type": string}, typeProviders?: TypeProviders): Type | Serializer {
+export function findTypeOrSerializerByName(name: string | {"@type": string}, typeProviders?: TypeProviders): Type | Serializer | undefined {
 
     if (typeof name === "object") {
         if (typeof name?.["@type"] !== "string") {
