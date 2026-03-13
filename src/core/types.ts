@@ -45,9 +45,12 @@ export function isArrayContainsInstanceOf(value: any, type: Function): boolean {
     return false;
 }
 
+/**
+ * @deprecated
+ */
 export function mapEntries<T>(map: {[key: string]: T}): {key: string, value: T}[] {
 
-    let array = [];
+    let array: any[] = [];
 
     for (let key in map) {
         array.push({key: key, value: map[key]});

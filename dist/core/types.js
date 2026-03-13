@@ -47,6 +47,9 @@ export function isArrayContainsInstanceOf(value, type) {
     }
     return false;
 }
+/**
+ * @deprecated
+ */
 export function mapEntries(map) {
     let array = [];
     for (let key in map) {

@@ -18,7 +18,7 @@ function unserializeImplWithSerializer(value: any, type: InternalType | null | u
     const serializer = typeSerializer ? typeSerializer : (typeSerializer !== false && findTypeSerializer(type as any, options?.typeProviders));
 
     if (Array.isArray(value)) {
-        const array = [];
+        const array: any[] = [];
 
         for (const i of value) {
             array.push(unserializeImplWithSerializer(i, type, serializer || false, options));

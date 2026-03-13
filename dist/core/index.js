@@ -22,4 +22,5 @@ export { toInteger, isArrayContainsInstanceOf, mapEntries, toFloat, toString } f
 export { waitTill } from "./wait.js";
 export { waitPromise } from "./waitPromise.js";
 export { wasmSupported } from "./wasmSupport.js";
+export { topLevelAwait, topLevelAwaits, waitTopLevelAwait } from "./topLevelAwait.js";
 //# sourceMappingURL=index.js.map
