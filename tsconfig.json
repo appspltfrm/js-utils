@@ -16,7 +16,7 @@
         "rootDir": "src",
         "sourceMap": true,
         "importHelpers": true,
-        "customConditions": ["development"]
+        "customConditions": ["monorepo"]
     },
 
     "exclude": [

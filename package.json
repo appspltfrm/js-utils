@@ -1,7 +1,7 @@
 {
   "name": "@appspltfrm/js-utils",
   "type": "module",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "sideEffects": false,
   "scripts": {
     "build": "node-utils-file-system-glob-delete \"dist/**/*\" && tsc -p tsconfig.json && npm run build:TsTransformer",
@@ -24,14 +24,14 @@
   },
   "exports": {
     ".": {
-      "development": "./src/index.ts",
       "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
+      "default": "./dist/index.js",
+      "monorepo": "./src/index.ts"
     },
     "./*": {
-      "development": "./src/*/index.ts",
       "types": "./dist/*/index.d.ts",
-      "default": "./dist/*/index.js"
+      "default": "./dist/*/index.js",
+      "monorepo": "./src/*/index.ts"
     }
   }
 }
