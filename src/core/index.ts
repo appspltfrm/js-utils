@@ -1,6 +1,6 @@
 export type {Clone} from "./clone.js";
 export type {
-    EnumValueName, EnumStaticName, EnumFromJSONValue, EnumValueOfValue, EnumStatic, EnumValueJson
+  EnumValueName, EnumStaticName, EnumFromJSONValue, EnumValueOfValue, EnumStatic, EnumValueJson
 } from "./Enum.js";
 export type {Equals} from "./equals.js";
 export type {ForwardRefFn} from "./forwardRef.js";

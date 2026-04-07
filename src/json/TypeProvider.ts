@@ -2,24 +2,24 @@ import {Type} from "../core/Type.js";
 import {Serializer} from "./Serializer.js";
 
 export interface TypeSerializerProvider {
-    type: Type;
-    serializer: Serializer;
+  type: Type;
+  serializer: Serializer;
 }
 
 export interface TypeNameProvider {
-    type: Type;
-    name: string;
+  type: Type;
+  name: string;
 }
 
 export interface TypeNameSerializerProvider {
-    name: string;
-    serializer: Serializer;
+  name: string;
+  serializer: Serializer;
 }
 
 export interface InternalTypeProvider {
-    type?: Type;
-    name?: string;
-    serializer?: Serializer;
+  type?: Type;
+  name?: string;
+  serializer?: Serializer;
 }
 
 export type TypeWithJsonTypeName = (Type & {jsonTypeName: string});

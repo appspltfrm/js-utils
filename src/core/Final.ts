@@ -1,33 +1,50 @@
 /**
- * Turns static and non-static fields into getter-only, and therefor renders them "Final".
- * To use simply annotate the static or non-static field with: @Final
+ * A property decorator that makes a field "final" by preventing further
+ * modifications after its initial assignment.
  *
- * @link http://stackoverflow.com/a/37778842
+ * It converts the property into a getter-only property. For non-static
+ * fields, it waits for the first assignment before locking the value.
+ *
+ * @param target The prototype or constructor of the class.
+ * @param propertyKey The name of the property.
+ *
+ * @example
+ * ```typescript
+ * class User {
+ *   @final
+ *   readonly id: string;
+ *
+ *   constructor(id: string) {
+ *     this.id = id; // First assignment works
+ *     // this.id = "new"; // Throws or fails silently depending on strict mode
+ *   }
+ * }
+ * ```
  */
 export function final(target: any, propertyKey: string) {
-    const value: any = target[propertyKey];
-    // if it currently has no value, then wait for the first setter-call
-    // usually the case with non-static fields
-    if (!value) {
-        Object.defineProperty(target, propertyKey, {
-            set: function (value: any) {
-                Object.defineProperty(this, propertyKey, {
-                    get: function () {
-                        return value;
-                    },
-                    enumerable: true,
-                    configurable: false
-                });
-            },
-            enumerable: true,
-            configurable: true
+  const value: any = target[propertyKey];
+  // if it currently has no value, then wait for the first setter-call
+  // usually the case with non-static fields
+  if (!value) {
+    Object.defineProperty(target, propertyKey, {
+      set: function (value: any) {
+        Object.defineProperty(this, propertyKey, {
+          get: function () {
+            return value;
+          },
+          enumerable: true,
+          configurable: false
         });
-    } else { // else, set it immediatly
-        Object.defineProperty(target, propertyKey, {
-            get: function () {
-                return value;
-            },
-            enumerable: true
-        });
-    }
+      },
+      enumerable: true,
+      configurable: true
+    });
+  } else { // else, set it immediately
+    Object.defineProperty(target, propertyKey, {
+      get: function () {
+        return value;
+      },
+      enumerable: true
+    });
+  }
 }

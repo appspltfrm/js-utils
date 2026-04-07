@@ -6,63 +6,63 @@ import {SerializationOptions} from "./SerializationOptions.js";
 import {Serializer} from "./Serializer.js";
 
 export function unserializeImpl(value: any, type: InternalType | null | undefined, options?: SerializationOptions) {
-    return unserializeImplWithSerializer(value, type, null, options);
+  return unserializeImplWithSerializer(value, type, null, options);
 }
 
 function unserializeImplWithSerializer(value: any, type: InternalType | null | undefined, typeSerializer: Serializer | false | null | undefined, options?: SerializationOptions): any {
 
-    if (value === undefined || value === null) {
-        return value;
+  if (value === undefined || value === null) {
+    return value;
+  }
+
+  const serializer = typeSerializer ? typeSerializer : (typeSerializer !== false && findTypeSerializer(type as any, options?.typeProviders));
+
+  if (Array.isArray(value)) {
+    const array: any[] = [];
+
+    for (const i of value) {
+      array.push(unserializeImplWithSerializer(i, type, serializer || false, options));
     }
 
-    const serializer = typeSerializer ? typeSerializer : (typeSerializer !== false && findTypeSerializer(type as any, options?.typeProviders));
+    return array;
+  }
 
-    if (Array.isArray(value)) {
-        const array: any[] = [];
+  if (serializer) {
+    return serializer.unserialize(value, options);
 
-        for (const i of value) {
-            array.push(unserializeImplWithSerializer(i, type, serializer || false, options));
-        }
+  } else if (type?.fromJSON) {
+    return type.fromJSON(value, options);
 
-        return array;
+  } else if (type?.prototype?.["fromJSON"]) {
+    const unserialized = Object.create(type.prototype);
+    unserialized.fromJSON(value, options);
+    return unserialized;
+
+  } else if (type && type !== Object && type !== Array && type.prototype?.constructor) {
+    return new (type as any)(value);
+
+  } else {
+
+    type = identifyType(value);
+    if (type !== Object) {
+      const serializer = findTypeSerializer(type!, options?.typeProviders);
+      if (serializer) {
+        return serializer.unserialize(value, options)
+      }
     }
 
-    if (serializer) {
-        return serializer.unserialize(value, options);
-
-    } else if (type?.fromJSON) {
-        return type.fromJSON(value, options);
-
-    } else if (type?.prototype?.["fromJSON"]) {
-        const unserialized = Object.create(type.prototype);
-        unserialized.fromJSON(value, options);
-        return unserialized;
-
-    } else if (type && type !== Object && type !== Array && type.prototype?.constructor) {
-        return new (type as any)(value);
-
-    } else {
-
-        type = identifyType(value);
-        if (type !== Object) {
-            const serializer = findTypeSerializer(type!, options?.typeProviders);
-            if (serializer) {
-                return serializer.unserialize(value, options)
-            }
-        }
-
-        const namedTypeOrSerializer = findTypeOrSerializerByName(value, options?.typeProviders);
-        if (namedTypeOrSerializer) {
-            return unserializeImplWithSerializer(value, (namedTypeOrSerializer instanceof Serializer) ? null : namedTypeOrSerializer, namedTypeOrSerializer instanceof Serializer ? namedTypeOrSerializer : null, options);
-        }
-
-        const niu: any = {};
-
-        for (const property of Object.keys(value)) {
-            niu[property] = unserializeImpl(value[property], null, options);
-        }
-
-        return niu;
-
+    const namedTypeOrSerializer = findTypeOrSerializerByName(value, options?.typeProviders);
+    if (namedTypeOrSerializer) {
+      return unserializeImplWithSerializer(value, (namedTypeOrSerializer instanceof Serializer) ? null : namedTypeOrSerializer, namedTypeOrSerializer instanceof Serializer ? namedTypeOrSerializer : null, options);
     }
+
+    const niu: any = {};
+
+    for (const property of Object.keys(value)) {
+      niu[property] = unserializeImpl(value[property], null, options);
+    }
+
+    return niu;
+
+  }
 }

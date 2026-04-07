@@ -1,15 +1,15 @@
 export {PreferencesCollectionRefImpl} from "./PreferencesCollectionRefImpl.js";
 export type {
-    PreferencesCollectionRef,
-    PreferencesItemRef,
-    PreferencesSetOptions,
-    PreferencesItem,
-    PreferencesItemEvent,
-    PreferencesItemEventListener,
-    PreferencesItemEventType,
-    PreferencesItemValueRef,
-    PreferencesContainer,
-    PreferencesFilter
+  PreferencesCollectionRef,
+  PreferencesItemRef,
+  PreferencesSetOptions,
+  PreferencesItem,
+  PreferencesItemEvent,
+  PreferencesItemEventListener,
+  PreferencesItemEventType,
+  PreferencesItemValueRef,
+  PreferencesContainer,
+  PreferencesFilter
 } from "./interfaces.js";
 export {PreferencesItemRefImpl} from "./PreferencesItemRefImpl.js";
 export {MemoryPreferencesContainer} from "./MemoryPreferencesContainer.js";

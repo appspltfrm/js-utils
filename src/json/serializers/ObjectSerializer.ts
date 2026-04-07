@@ -11,34 +11,34 @@ import {unserializeImpl} from "../unserializeImpl.js";
  */
 export class ObjectSerializer extends Serializer {
 
-    constructor(type?: Type) {
-        super();
+  constructor(type?: Type) {
+    super();
 
-        if (type && type !== Object && type !== Array) {
-            this.type = type;
-        }
+    if (type && type !== Object && type !== Array) {
+      this.type = type;
     }
+  }
 
-    private readonly type?: Type;
+  private readonly type?: Type;
 
-    serialize(object: any, options?: SerializationOptions): any {
-        return serializeImpl(object, this.type, options);
-    }
+  serialize(object: any, options?: SerializationOptions): any {
+    return serializeImpl(object, this.type, options);
+  }
 
-    unserialize(json: any, options?: SerializationOptions): any {
-        return unserializeImpl(json, this.type, options);
-    }
+  unserialize(json: any, options?: SerializationOptions): any {
+    return unserializeImpl(json, this.type, options);
+  }
 }
 
 export namespace ObjectSerializer {
-    export const instance = new ObjectSerializer();
+  export const instance = new ObjectSerializer();
 
-    export function getTypeSerializer(type: Type, typeProviders?: TypeProvider[]) {
-        const serializer = findTypeSerializer(type, typeProviders);
-        if (serializer) {
-            return serializer;
-        } else {
-            return new ObjectSerializer(type);
-        }
+  export function getTypeSerializer(type: Type, typeProviders?: TypeProvider[]) {
+    const serializer = findTypeSerializer(type, typeProviders);
+    if (serializer) {
+      return serializer;
+    } else {
+      return new ObjectSerializer(type);
     }
+  }
 }

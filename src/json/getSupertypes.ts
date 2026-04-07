@@ -3,5 +3,5 @@ import {getPrototypesTree} from "./getPrototypesTree.js";
 import {InternalType} from "./InternalType.js";
 
 export function getSupertypes(type: Type): Array<Type & InternalType> {
-    return getPrototypesTree(type.prototype).map(type => type.constructor);
+  return getPrototypesTree(type.prototype).map(type => type.constructor);
 }

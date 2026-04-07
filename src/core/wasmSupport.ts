@@ -1,8 +1,8 @@
-// https://github.com/MaxGraey/wasm-check
+// Adapted from https://github.com/MaxGraey/wasm-check
 
 const WA = globalThis.WebAssembly;
-const exists = typeof WA === 'object';
-const has = (entity: any) => typeof entity !== 'undefined';
+const exists = typeof WA === "object";
+const has = (entity: any) => typeof entity !== "undefined";
 const u8 = (...bytes: number[]) => Uint8Array.of(0, 97, 115, 109, 1, 0, 0, 0, ...bytes);
 // const u16  = (...bytes: number[]) => Uint16Array.of(24832, 28019, 1, 0, ...bytes)
 const u32 = (...bytes: number[]) => Uint32Array.of(0x6D736100, 1, ...bytes);
@@ -25,66 +25,94 @@ const simdWasm = u32a(84344833, 6357249, 17369600, 4259847, 186257917, 184575846
 const referencesWasm = u8a(10, 7, 1, 5, 0, 208, 112, 26);
 
 function check(wasm: any, exec?: boolean) {
-    if (!exists) {
-        return false;
+  if (!exists) {
+    return false;
+  }
+  const buffer = wasm.buffer;
+  let ok = cache.get(buffer);
+  if (ok == null) {
+    if ((ok = WA.validate(buffer)) && exec) {
+      try {
+        (new WA.Instance(new WA.Module(buffer)).exports["0"] as Function)();
+      } catch (_a) {
+        ok = false;
+      }
     }
-    const buffer = wasm.buffer;
-    let ok = cache.get(buffer);
-    if (ok == null) {
-        if ((ok = WA.validate(buffer)) && exec) {
-            try {
-                (new WA.Instance(new WA.Module(buffer)).exports['0'] as Function)();
-            } catch (_a) {
-                ok = false;
-            }
-        }
-        cache.set(buffer, ok);
-    }
-    return ok;
+    cache.set(buffer, ok);
+  }
+  return ok;
 }
 
+/**
+ * Checks if basic WebAssembly is supported in the current environment.
+ * @param version The WebAssembly version to check (defaults to 1).
+ */
 export function wasmSupported(version = 1) {
-    return exists && check(Uint32Array.of(0x6D736100, version));
+  return exists && check(Uint32Array.of(0x6D736100, version));
 }
 
+/**
+ * Checks if `WebAssembly.instantiateStreaming` is supported.
+ */
 export function wasmStreamingSupported() {
-    return exists && has(WA.instantiateStreaming);
+  return exists && has(WA.instantiateStreaming);
 }
 
+/**
+ * Provides a set of getters to check for specific WebAssembly features support.
+ *
+ * Based on the `wasm-check` library.
+ */
 export function wasmSupportedFeatures() {
-    return {
-        /** Check support JavaScript BigInt to WebAssembly i64 integration (--experimental-wasm-bigint) */
-        get bigInt() { return check(bigIntWasm, true); },
-        /** Check support bulk memory operations (--experimental-wasm-bulk-memory) */
-        get bulk() { return check(bulkWasm); },
-        /** Check support exception handling (--experimental-wasm-eh) */
-        get exceptions() { return check(exceptionsWasm); },
-        /** Check support 64-bit memory (--experimental-wasm-memory64) */
-        get memory64() { return check(memory64Wasm); },
-        /** Check support import & export of mutable global (--experimental-wasm-mut-global) */
-        get mutableGlobal() { return check(mutableGlobalWasm); },
-        /** Check support multi values (--experimental-wasm-mv) */
-        get multiValue() { return check(multiValueWasm); },
-        /** Check support non-trapping float-to-int conversions (--experimental-wasm-sat-f2i-conversions) */
-        get saturateConversions() { return check(saturateConversionsWasm); },
-        /** Check support zero and sign extensions (--experimental-wasm-se) */
-        get signExtensions() { return check(signExtensionsWasm); },
-        /** Check support tail call optiminations (--experimental-wasm-return-call) */
-        get tailCall() { return check(tailCallWasm); },
-        /** Check support threads and atomics (--experimental-wasm-threads) */
-        get threads() { return check(threadsWasm); },
-        /** Check support SIMD (--experimental-wasm-simd) */
-        get simd() { return check(simdWasm); },
-        /** Check support basic reference types "externref" (--experimental-wasm-reftypes) */
-        get references() { return check(referencesWasm); },
-        // /** Check support Type Reflection (--experimental-wasm-type-reflection) */
-        // get typeReflection() { return exists && has(WA.Memory.type); },
-        // /** Check support typed function references and closures (pre-proposal) */
-        // get funcReferences() { return exists && has(WA.Function); },
-        /* TODO
-         * - GC
-         * - Web IDL Bindings (Host binding) ?
-         */
+  return {
+    /** Check support for JavaScript BigInt to WebAssembly i64 integration */
+    get bigInt() {
+      return check(bigIntWasm, true);
+    },
+    /** Check support for bulk memory operations */
+    get bulk() {
+      return check(bulkWasm);
+    },
+    /** Check support for exception handling */
+    get exceptions() {
+      return check(exceptionsWasm);
+    },
+    /** Check support for 64-bit memory */
+    get memory64() {
+      return check(memory64Wasm);
+    },
+    /** Check support for import & export of mutable globals */
+    get mutableGlobal() {
+      return check(mutableGlobalWasm);
+    },
+    /** Check support for multi-values */
+    get multiValue() {
+      return check(multiValueWasm);
+    },
+    /** Check support for non-trapping float-to-int conversions */
+    get saturateConversions() {
+      return check(saturateConversionsWasm);
+    },
+    /** Check support for zero and sign extensions */
+    get signExtensions() {
+      return check(signExtensionsWasm);
+    },
+    /** Check support for tail call optimizations */
+    get tailCall() {
+      return check(tailCallWasm);
+    },
+    /** Check support for threads and atomics */
+    get threads() {
+      return check(threadsWasm);
+    },
+    /** Check support for SIMD */
+    get simd() {
+      return check(simdWasm);
+    },
+    /** Check support for basic reference types "externref" */
+    get references() {
+      return check(referencesWasm);
     }
+  }
 }
 

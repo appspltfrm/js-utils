@@ -1,27 +1,58 @@
 import {SerializationOptions} from "./SerializationOptions.js";
 
+/**
+ * Base class for custom property serializers.
+ *
+ * You can extend this class to provide custom logic for serializing and
+ * unserializing specific property types that are not handled by the default
+ * serializers (like Date, Set, Map, etc.).
+ *
+ * @example
+ * ```typescript
+ * class MyCustomSerializer extends Serializer<MyType> {
+ *   serialize(object: MyType) { return object.toString(); }
+ *   unserialize(json: string) { return new MyType(json); }
+ * }
+ * ```
+ */
 export abstract class Serializer<T = any> {
 
-    public serialize(object: any, options?: SerializationOptions): any {
-        return object;
-    }
+  /**
+     * Converts a class property value into a JSON-serializable format.
+     */
+  public serialize(object: any, options?: SerializationOptions): any {
+    return object;
+  }
 
-    public abstract unserialize(json: any, options?: SerializationOptions): T;
+  /**
+     * Converts a JSON value back into a class property value.
+     */
+  public abstract unserialize(json: any, options?: SerializationOptions): T;
 
-    protected isUndefinedOrNull(value: any) {
-        return value === undefined || value === null;
-    }
+  /**
+     * Helper to check if a value is undefined or null.
+     */
+  protected isUndefinedOrNull(value: any): boolean {
+    return value === undefined || value === null;
+  }
 
-    protected serializeUndefinedOrNull(value: any, options?: SerializationOptions): any {
-        return value;
-    }
+  /**
+     * Default handling for serializing undefined or null values.
+     */
+  protected serializeUndefinedOrNull(value: any, options?: SerializationOptions): any {
+    return value;
+  }
 
-    protected unserializeUndefinedOrNull(value: any, options?: SerializationOptions): any {
-        if (options && options.disallowUndefinedOrNull) {
-            throw "Undefined/null value is not allowed";
-        } else {
-            return value;
-        }
+  /**
+     * Default handling for unserializing undefined or null values.
+     * @throws Error if `disallowUndefinedOrNull` option is set.
+     */
+  protected unserializeUndefinedOrNull(value: any, options?: SerializationOptions): any {
+    if (options && options.disallowUndefinedOrNull) {
+      throw new Error("Undefined/null value is not allowed");
+    } else {
+      return value;
     }
+  }
 
 }

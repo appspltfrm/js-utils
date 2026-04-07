@@ -1,3 +1,3 @@
 export interface TypedJson {
-    "@type": string;
+  "@type": string;
 }

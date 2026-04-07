@@ -1,59 +1,71 @@
 /**
- * Check condition async and re-check every 100ms (or other interval) till it return truly value (!!).
- * If condition throws error, the promise will be rejected.
+ * Periodically checks a condition asynchronously until it becomes truthy.
+ *
+ * If the condition throws an error, the promise is immediately rejected.
+ *
+ * @param condition A function that returns a value to be tested for truthiness.
+ * @param interval The polling interval in milliseconds (defaults to 100ms).
+ * @param timeout Optional maximum time to wait in milliseconds.
+ * @returns A promise that resolves with the first truthy value returned by the condition.
+ * @throws Error if the timeout is reached or the condition throws.
+ *
+ * @example
+ * ```typescript
+ * const element = await waitTill(() => document.querySelector("#my-id"), 50, 2000);
+ * ```
  */
 export function waitTill<O>(condition: () => O, interval: number = 100, timeout?: number): Promise<O> {
 
-    return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
 
-        let intervalId: any;
-        let finished = false;
+    let intervalId: any;
+    let finished = false;
 
-        let test = () => {
+    let test = () => {
 
-            try {
-                const result = condition();
-                if (!!result) {
+      try {
+        const result = condition();
+        if (!!result) {
 
-                    if (intervalId) {
-                        clearInterval(intervalId);
-                    }
+          if (intervalId) {
+            clearInterval(intervalId);
+          }
 
-                    finished = true;
-                    resolve(result);
+          finished = true;
+          resolve(result);
 
-                    return true;
-                }
-
-            } catch (error) {
-
-                if (intervalId) {
-                    clearInterval(intervalId);
-                }
-
-                finished = true;
-                reject(error);
-            }
-
-            return false;
-        };
-
-        if (!test()) {
-            intervalId = setInterval(test, interval === undefined || interval === null || interval < 0 ? 100 : interval);
-
-            if (typeof timeout === "number" && timeout > 0) {
-                setTimeout(() => {
-
-                    if (!finished) {
-
-                        if (intervalId) {
-                            clearInterval(intervalId);
-                        }
-
-                        reject(new Error("Timeout of waitTill"));
-                    }
-                }, timeout);
-            }
+          return true;
         }
-    });
+
+      } catch (error) {
+
+        if (intervalId) {
+          clearInterval(intervalId);
+        }
+
+        finished = true;
+        reject(error);
+      }
+
+      return false;
+    };
+
+    if (!test()) {
+      intervalId = setInterval(test, interval === undefined || interval === null || interval < 0 ? 100 : interval);
+
+      if (typeof timeout === "number" && timeout > 0) {
+        setTimeout(() => {
+
+          if (!finished) {
+
+            if (intervalId) {
+              clearInterval(intervalId);
+            }
+
+            reject(new Error("Timeout of waitTill"));
+          }
+        }, timeout);
+      }
+    }
+  });
 }

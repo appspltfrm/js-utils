@@ -5,75 +5,100 @@ import {PreferencesCollectionRef, PreferencesItem, PreferencesItemEvent} from ".
 import {PreferencesCollectionRefImpl} from "../PreferencesCollectionRefImpl.js";
 import {PreferencesItemImpl} from "../PreferencesItemImpl.js";
 
+/**
+ * Internal observer for preference collection items using RxJS.
+ */
 class CollectionItemsObserver<Key, Value> extends Observable<PreferencesItem<Key, Value>[]> {
 
-    constructor(private readonly collection: PreferencesCollectionRef<Key, Value>) {
-        super(subscriber => this.onSubscribe(subscriber));
+  constructor(private readonly collection: PreferencesCollectionRef<Key, Value>) {
+    super(subscriber => this.onSubscribe(subscriber));
+  }
+
+  private unlisten: (() => void) | undefined;
+
+  private readonly subscribers: Subscriber<PreferencesItem<Key, Value>[]>[] = [];
+
+  private onSubscribe(subscriber: Subscriber<PreferencesItem<Key, Value>[]>) {
+
+    this.collection.items().then(items => {
+      subscriber.next(items);
+      this.subscribers.push(subscriber);
+
+      if (!this.unlisten) {
+        this.unlisten = this.collection.listen(event => this.listener(event));
+      }
+    });
+
+    return () => {
+      const i = this.subscribers.indexOf(subscriber);
+      if (i > -1) {
+        this.subscribers.splice(i, 1);
+      }
+
+      if (this.subscribers.length === 0 && this.unlisten) {
+        this.unlisten();
+      }
     }
+  }
 
-    private unlisten: (() => void) | undefined;
+  protected async listener(event: PreferencesItemEvent<Key, Value>) {
 
-    private readonly subscribers: Subscriber<PreferencesItem<Key, Value>[]>[] = [];
+    const items = await this.collection.items();
 
-    private onSubscribe(subscriber: Subscriber<PreferencesItem<Key, Value>[]>) {
-
-        this.collection.items().then(items => {
-            subscriber.next(items);
-            this.subscribers.push(subscriber);
-
-            if (!this.unlisten) {
-                this.unlisten = this.collection.listen(event => this.listener(event));
-            }
-        });
-
-        return () => {
-            const i = this.subscribers.indexOf(subscriber);
-            if (i > -1) {
-                this.subscribers.splice(i, 1);
-            }
-
-            if (this.subscribers.length === 0 && this.unlisten) {
-                this.unlisten();
-            }
-        }
+    for (const subscriber of this.subscribers) {
+      subscriber.next(items.slice()
+        .map(item => (item && new PreferencesItemImpl(item.ref.collection, deepClone(item.key), deepClone(item.value), item.lastUpdate)) || item)
+      );
     }
-
-    protected async listener(event: PreferencesItemEvent<Key, Value>) {
-
-        const items = await this.collection.items();
-
-        for (const subscriber of this.subscribers) {
-            subscriber.next(items.slice()
-                .map(item => (item && new PreferencesItemImpl(item.ref.collection, deepClone(item.key), deepClone(item.value), item.lastUpdate)) || item)
-            );
-        }
-    }
+  }
 
 }
 
 declare module "../interfaces.js" {
 
-    interface PreferencesCollectionRef<Key, Value> {
-        observeItems(): Observable<PreferencesItem<Key, Value>[]>;
-        observeValues(): Observable<Value[]>;
-    }
+  /**
+     * Augmented interface for PreferencesCollectionRef to include RxJS methods.
+     */
+  interface PreferencesCollectionRef<Key, Value> {
+    /**
+         * Returns an observable of all items in the collection, updating on any change.
+         */
+    observeItems(): Observable<PreferencesItem<Key, Value>[]>;
+    /**
+         * Returns an observable of all values in the collection, updating on any change.
+         */
+    observeValues(): Observable<Value[]>;
+  }
 
 }
 
 declare module "../PreferencesCollectionRefImpl.js" {
 
-    interface PreferencesCollectionRefImpl<Key, Value> extends PreferencesCollectionRef<Key, Value> {
-    }
+  interface PreferencesCollectionRefImpl<Key, Value> extends PreferencesCollectionRef<Key, Value> {
+  }
 
 }
 
+/**
+ * Injects RxJS reactive methods (`observeItems`, `observeValues`) into the
+ * `PreferencesCollectionRef` class.
+ *
+ * This must be called before using any reactive methods on preference collections.
+ *
+ * @example
+ * ```typescript
+ * injectCollectionRxjs();
+ * const theme$ = userPrefs.observeValues();
+ * theme$.subscribe(values => console.log(values));
+ * ```
+ */
 export function injectCollectionRxjs() {
 
-    PreferencesCollectionRefImpl.prototype.observeItems = function (this: PreferencesCollectionRefImpl<any, any>) {
-        return new CollectionItemsObserver(this);
-    };
+  PreferencesCollectionRefImpl.prototype.observeItems = function (this: PreferencesCollectionRefImpl<any, any>) {
+    return new CollectionItemsObserver(this);
+  };
 
-    PreferencesCollectionRefImpl.prototype.observeValues = function (this: PreferencesCollectionRefImpl<any, any>) {
-        return new CollectionItemsObserver(this).pipe(map(items => items.map(item => item.value)));
-    };
+  PreferencesCollectionRefImpl.prototype.observeValues = function (this: PreferencesCollectionRefImpl<any, any>) {
+    return new CollectionItemsObserver(this).pipe(map(items => items.map(item => item.value)));
+  };
 }

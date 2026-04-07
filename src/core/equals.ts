@@ -2,9 +2,9 @@ export const equals = Symbol("@appspltfrm/js-utils/core/equals");
 
 export interface Equals {
 
-    /**
+  /**
      * Indicates whether some other object is "equal to" this one.
-     * 
+     *
      * The equals method implements an equivalence relation on non-null object references:
      * <ul>
      * <li>It is reflexive: for any non-null reference value x, x.equals(x) should return true.</li>
@@ -16,6 +16,6 @@ export interface Equals {
      * The equals method for class Object implements the most discriminating possible equivalence relation on objects; that is, for any non-null reference values x and y, this method returns true if and only if x and y refer to the same object (x == y has the value true).
      * Note that it is generally necessary to override the hashCode method whenever this method is overridden, so as to maintain the general contract for the hashCode method, which states that equal objects must have equal hash codes.
      */
-    [equals](object: any): boolean;
+  [equals](object: any): boolean;
 
 }
