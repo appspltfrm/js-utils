@@ -1,6 +1,7 @@
 export { AssignableType, Type } from "./Type.js";
 export { BitFlagsMutable } from "./BitFlagsMutable.js";
 export { BitFlags } from "./BitFlags.js";
+export { BNumber } from "./BNumber.js";
 export { DateTimezone } from "./DateTimezone.js";
 export { Enumerable } from "./Enumerable.js";
 export { Enum } from "./Enum.js";

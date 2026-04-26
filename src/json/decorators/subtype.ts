@@ -24,6 +24,8 @@ type Fn = (classType: Type) => void;
  * class Dog extends Animal { bark() {} }
  * ```
  */
+export function subtype(supertype: Type): Fn;
+
 export function subtype(supertype: Type, matcher: SubtypeMatcher): Fn;
 
 export function subtype(supertype: Type, property: string, value: any): Fn;
@@ -32,7 +34,7 @@ export function subtype(supertype: Type, property: string, value: any): Fn;
  * Decorator that supports polymorphism during unserialization.
  * Handles various overloads to provide a flexible API.
  */
-export function subtype(supertype: Type, propertyOrMatcher: string | SubtypeMatcher, value?: any): Fn {
+export function subtype(supertype: Type, propertyOrMatcher?: string | SubtypeMatcher, value?: any): Fn {
   return function (classType: Type) {
     setupSerialization(supertype);
 
@@ -40,11 +42,23 @@ export function subtype(supertype: Type, propertyOrMatcher: string | SubtypeMatc
 
     const types = internalType.__jsonSubtypes = (internalType.hasOwnProperty("__jsonSubtypes") && internalType.__jsonSubtypes) || [];
 
+    let property = typeof propertyOrMatcher === "string" ? propertyOrMatcher : undefined;
+    let actualValue = value;
+    let matcher = typeof propertyOrMatcher === "function" ? propertyOrMatcher : undefined;
+
+    if (propertyOrMatcher === undefined) {
+      const classWithJsonTypeName = classType as any;
+      if (classWithJsonTypeName.jsonTypeName) {
+        property = "@type";
+        actualValue = classWithJsonTypeName.jsonTypeName;
+      }
+    }
+
     types.push({
       type: classType,
-      property: typeof propertyOrMatcher === "string" ? propertyOrMatcher : undefined,
-      value: value,
-      matcher: typeof propertyOrMatcher === "function" ? propertyOrMatcher : undefined
+      property: property,
+      value: actualValue,
+      matcher: matcher
     });
   }
 }

@@ -1,28 +1,40 @@
+/**
+ * Checks if basic WebAssembly is supported in the current environment.
+ * @param version The WebAssembly version to check (defaults to 1).
+ */
 export declare function wasmSupported(version?: number): any;
+/**
+ * Checks if `WebAssembly.instantiateStreaming` is supported.
+ */
 export declare function wasmStreamingSupported(): boolean;
+/**
+ * Provides a set of getters to check for specific WebAssembly features support.
+ *
+ * Based on the `wasm-check` library.
+ */
 export declare function wasmSupportedFeatures(): {
-    /** Check support JavaScript BigInt to WebAssembly i64 integration (--experimental-wasm-bigint) */
+    /** Check support for JavaScript BigInt to WebAssembly i64 integration */
     readonly bigInt: any;
-    /** Check support bulk memory operations (--experimental-wasm-bulk-memory) */
+    /** Check support for bulk memory operations */
     readonly bulk: any;
-    /** Check support exception handling (--experimental-wasm-eh) */
+    /** Check support for exception handling */
     readonly exceptions: any;
-    /** Check support 64-bit memory (--experimental-wasm-memory64) */
+    /** Check support for 64-bit memory */
     readonly memory64: any;
-    /** Check support import & export of mutable global (--experimental-wasm-mut-global) */
+    /** Check support for import & export of mutable globals */
     readonly mutableGlobal: any;
-    /** Check support multi values (--experimental-wasm-mv) */
+    /** Check support for multi-values */
     readonly multiValue: any;
-    /** Check support non-trapping float-to-int conversions (--experimental-wasm-sat-f2i-conversions) */
+    /** Check support for non-trapping float-to-int conversions */
     readonly saturateConversions: any;
-    /** Check support zero and sign extensions (--experimental-wasm-se) */
+    /** Check support for zero and sign extensions */
     readonly signExtensions: any;
-    /** Check support tail call optiminations (--experimental-wasm-return-call) */
+    /** Check support for tail call optimizations */
     readonly tailCall: any;
-    /** Check support threads and atomics (--experimental-wasm-threads) */
+    /** Check support for threads and atomics */
     readonly threads: any;
-    /** Check support SIMD (--experimental-wasm-simd) */
+    /** Check support for SIMD */
     readonly simd: any;
-    /** Check support basic reference types "externref" (--experimental-wasm-reftypes) */
+    /** Check support for basic reference types "externref" */
     readonly references: any;
 };

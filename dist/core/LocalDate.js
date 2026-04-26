@@ -1,14 +1,24 @@
 import { clone } from "./clone.js";
 /**
- * A date, that points date-time always in local time.
- * It means, that UTC date/time will be shown in every time zone.
- */
-/**
- * Klasa reprezentująca datę i czas, która jest zawsze interpretowana w czasie lokalnym.
- * Oznacza to, że te same wartości UTC będą wyświetlane identycznie w każdej strefie czasowej.
+ * A date class that represents a date and time always interpreted in local time.
+ *
+ * This means that the UTC date/time values stored internally will be displayed
+ * identically regardless of the system's local time zone. It effectively treats
+ * the Date as if it were always in UTC but for "local" representation purposes.
+ *
+ * @example
+ * ```typescript
+ * const date = new LocalDate(2023, 0, 1, 12, 0); // Jan 1st, 2023, 12:00
+ * console.log(date.getHours()); // Always 12, regardless of system timezone
+ * ```
  */
 export class LocalDate extends Date {
     static jsonTypeName = "LocalDate";
+    /**
+       * Unserializes a JSON value into a LocalDate instance.
+       * @param json The JSON value (object, string, number, or Date).
+       * @returns A new LocalDate instance.
+       */
     static fromJSON(json) {
         if (typeof json === "object" && json && json["date"]) {
             return new LocalDate(json["date"]);
@@ -20,6 +30,9 @@ export class LocalDate extends Date {
             throw new Error(`Cannot unserialize "${JSON.stringify(json)}" to LocalDate`);
         }
     }
+    /**
+       * Creates a new LocalDate instance.
+       */
     constructor(valueOrYear, month, date, hours, minutes, seconds, ms) {
         if (typeof month === "number") {
             super(Date.UTC(valueOrYear, month, date, hours, minutes, seconds, ms));

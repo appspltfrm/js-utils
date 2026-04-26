@@ -63,8 +63,9 @@ function visitNode(node, program, typesToImport) {
         const isInterface = (target.flags & ts.SymbolFlags.Interface) !== 0;
         const isTypeAlias = (target.flags & ts.SymbolFlags.TypeAlias) !== 0;
         // If it's an interface or type alias and not also a value, it's not available at runtime
-        if ((isInterface || isTypeAlias) && !hasValueFlag)
+        if ((isInterface || isTypeAlias) && !hasValueFlag) {
             return false;
+        }
         return hasValueFlag;
     };
     if (ts.isDecorator(node) && ts.isClassDeclaration(node.parent) && ts.isCallExpression(node.expression)) {
@@ -75,8 +76,9 @@ function visitNode(node, program, typesToImport) {
             const clazz = node.parent;
             const isUsedAsValue = (symbol) => {
                 const declarations = symbol.getDeclarations();
-                if (!declarations)
+                if (!declarations) {
                     return false;
+                }
                 const currentSourceFile = node.getSourceFile();
                 // Check all identifiers in the current source file that refer to this symbol
                 const checkNode = (n) => {
@@ -84,15 +86,17 @@ function visitNode(node, program, typesToImport) {
                         // Skip the identifier in the property type itself
                         let parent = n.parent;
                         while (parent && parent !== node.parent) {
-                            if (ts.isTypeNode(parent))
+                            if (ts.isTypeNode(parent)) {
                                 return false;
+                            }
                             parent = parent.parent;
                         }
                         // Skip identifiers in imports
                         let p = n.parent;
                         while (p && p !== currentSourceFile) {
-                            if (ts.isImportClause(p) || ts.isImportSpecifier(p) || ts.isImportDeclaration(p))
+                            if (ts.isImportClause(p) || ts.isImportSpecifier(p) || ts.isImportDeclaration(p)) {
                                 return false;
+                            }
                             p = p.parent;
                         }
                         const nSymbol = typeChecker.getSymbolAtLocation(n);
@@ -120,8 +124,9 @@ function visitNode(node, program, typesToImport) {
                                     }
                                     curr = curr.parent;
                                 }
-                                if (isValueUsage)
+                                if (isValueUsage) {
                                     return true;
+                                }
                             }
                         }
                     }
@@ -131,8 +136,9 @@ function visitNode(node, program, typesToImport) {
             };
             const addTypeToImport = (symbol) => {
                 // Ensure the symbol corresponds to a runtime value (not a pure type/interface), resolve aliases
-                if (!symbolIsRuntimeValue(symbol))
+                if (!symbolIsRuntimeValue(symbol)) {
                     return undefined;
+                }
                 const declarations = symbol.getDeclarations();
                 if (declarations && declarations.length > 0) {
                     const symbolSourceFile = declarations[0].getSourceFile();
@@ -168,8 +174,9 @@ function visitNode(node, program, typesToImport) {
                                     }
                                 }
                             }
-                            if (moduleSpecifier)
+                            if (moduleSpecifier) {
                                 break;
+                            }
                         }
                         if (!moduleSpecifier) {
                             const currentFile = currentSourceFile.fileName;

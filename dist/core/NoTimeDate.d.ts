@@ -1,13 +1,26 @@
 import { clone, Clone } from "./clone.js";
 /**
- * A date, that points to absolute date - no time, no time zone, just year-month-date.
- */
-/**
- * Klasa reprezentująca datę bez komponentu czasu.
- * Wszystkie operacje na tej dacie ignorują godziny, minuty i sekundy (są one zawsze zerowane).
+ * A date class that represents a date without a time component.
+ *
+ * All time-related operations (hours, minutes, seconds, milliseconds) are
+ * effectively ignored or always reset to zero. This is useful for representing
+ * business dates like "2023-01-01" without worrying about timezone-induced shifts.
+ *
+ * Internally, it uses UTC at midnight to ensure consistency.
+ *
+ * @example
+ * ```typescript
+ * const date = new NoTimeDate(2023, 0, 1); // Jan 1st, 2023
+ * console.log(date.getHours()); // Always 0
+ * ```
  */
 export declare class NoTimeDate extends Date implements Clone<NoTimeDate> {
     static readonly jsonTypeName = "NoTimeDate";
+    /**
+       * Unserializes a JSON value into a NoTimeDate instance.
+       * @param json The JSON value (object, string, number, or Date).
+       * @returns A new NoTimeDate instance.
+       */
     static fromJSON(json: any): NoTimeDate;
     constructor();
     constructor(value: number | string | Date);

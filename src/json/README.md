@@ -27,8 +27,11 @@ class User {
 }
 ```
 
-### `@subtype(value, property?)`
+### `@subtype(supertype, matcherOrProperty?, value?)`
 Obsługuje polimorfizm. Pozwala na automatyczne rozpoznanie, którą klasę potomną należy utworzyć podczas deserializacji.
+
+#### Opcja 1: Automatyczne mapowanie przez `jsonTypeName`
+Jeśli klasa posiada statyczne pole `jsonTypeName`, można użyć skróconej wersji dekoratora. Mapowanie zostanie wykonane automatycznie po polu `@type` w JSON.
 
 ```typescript
 @serializable()
@@ -36,12 +39,18 @@ abstract class Animal {
     name: string;
 }
 
-@subtype("cat")
+@subtype(Animal)
 class Cat extends Animal {
+    static readonly jsonTypeName = "Cat";
     meow() { console.log("Meow!"); }
 }
+```
 
-@subtype("dog")
+#### Opcja 2: Ręczne mapowanie przez właściwość i wartość
+Pozwala zdefiniować dowolne pole i wartość, które identyfikują klasę.
+
+```typescript
+@subtype(Animal, "type", "dog")
 class Dog extends Animal {
     bark() { console.log("Woof!"); }
 }

@@ -1,3 +1,9 @@
+/**
+ * Converts a string or number to a float.
+ * @param value The value to convert.
+ * @returns The converted float value.
+ * @throws Error if the value cannot be converted.
+ */
 export function toFloat(value) {
     if (typeof value === "number") {
         return value;
@@ -6,12 +12,18 @@ export function toFloat(value) {
         return parseFloat(value);
     }
     else if (value) {
-        throw `Cannot convert value "${value}" to float`;
+        throw new Error(`Cannot convert value "${value}" to float`);
     }
     else {
         return value;
     }
 }
+/**
+ * Converts a string or number to an integer.
+ * @param value The value to convert.
+ * @returns The converted integer value.
+ * @throws Error if the value cannot be converted.
+ */
 export function toInteger(value) {
     if (typeof value === "number") {
         return value;
@@ -20,12 +32,16 @@ export function toInteger(value) {
         return parseInt(value);
     }
     else if (value) {
-        throw `Cannot convert value "${value}" to integer`;
+        throw new Error(`Cannot convert value "${value}" to integer`);
     }
     else {
         return value;
     }
 }
+/**
+ * Ensures a value is a string, calling `toString()` if necessary.
+ * Returns null or undefined as is.
+ */
 export function toString(value) {
     if (typeof value === "string") {
         return value;
@@ -37,6 +53,9 @@ export function toString(value) {
         return value.toString();
     }
 }
+/**
+ * Checks if an array contains at least one instance of a specific class.
+ */
 export function isArrayContainsInstanceOf(value, type) {
     if (Array.isArray(value)) {
         for (let a of value) {
@@ -48,7 +67,9 @@ export function isArrayContainsInstanceOf(value, type) {
     return false;
 }
 /**
- * @deprecated
+ * Converts a key-value map into an array of entry objects.
+ *
+ * @deprecated Use native `Object.entries()` or `Map` instead.
  */
 export function mapEntries(map) {
     let array = [];

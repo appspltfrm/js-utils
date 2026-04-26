@@ -3,8 +3,25 @@ import { deepClone } from "./deepClone.js";
 import { merge } from "./merge.js";
 import { PreferencesCollectionRefImpl } from "./PreferencesCollectionRefImpl.js";
 import { PreferencesItemImpl } from "./PreferencesItemImpl.js";
+/**
+ * An implementation of PreferencesContainer that uses Web Storage API
+ * (`localStorage` or `sessionStorage`) for persistent or session-based storage.
+ *
+ * Data is serialized to JSON before being stored.
+ *
+ * @example
+ * ```typescript
+ * const container = new StoragePreferencesContainer(window.localStorage);
+ * const userSettings = container.collection("user_settings");
+ * await userSettings.set("theme", "dark");
+ * ```
+ */
 export class StoragePreferencesContainer {
     storage;
+    /**
+       * Creates a new StoragePreferencesContainer.
+       * @param storage The storage backend (e.g., localStorage or sessionStorage).
+       */
     constructor(storage) {
         this.storage = storage;
     }
@@ -39,6 +56,9 @@ export class StoragePreferencesContainer {
         }
         return undefined;
     }
+    /**
+       * @inheritdoc
+       */
     async set(collection, key, value, options) {
         const itemKey = this.storageKey(collection, key);
         let item = this.getStorageItem(itemKey);
@@ -70,10 +90,16 @@ export class StoragePreferencesContainer {
         }
         return Promise.resolve(this.newItem({ key, collection, value: item.value, lastUpdate: item.lastUpdate }));
     }
+    /**
+       * @inheritdoc
+       */
     get(collection, key) {
         const item = this.getStorageItem(this.storageKey(collection, key));
         return Promise.resolve(this.newItem(item && { collection, key, value: item.value, lastUpdate: item.lastUpdate }));
     }
+    /**
+       * @inheritdoc
+       */
     delete(collection, ...keys) {
         const deleted = [];
         KEYS: for (const key of keys) {
@@ -96,6 +122,9 @@ export class StoragePreferencesContainer {
         }
         return Promise.resolve(deleted);
     }
+    /**
+       * @inheritdoc
+       */
     deleteAll(collection) {
         const deleted = [];
         for (let i = 0; i < this.storage.length; i++) {
@@ -115,10 +144,16 @@ export class StoragePreferencesContainer {
         }
         return Promise.resolve(deleted);
     }
+    /**
+       * @inheritdoc
+       */
     exists(collection, key) {
         const item = this.getStorageItem(this.storageKey(collection, key));
         return Promise.resolve(!!item);
     }
+    /**
+       * @inheritdoc
+       */
     items(collection, keysToFilter) {
         const items = [];
         const args = arguments;
@@ -148,6 +183,9 @@ export class StoragePreferencesContainer {
         }
         return Promise.resolve(items);
     }
+    /**
+       * @inheritdoc
+       */
     update(collection, key, changes) {
         const storageKey = this.storageKey(collection, key);
         const rawItem = this.storage.getItem(storageKey);
@@ -172,9 +210,15 @@ export class StoragePreferencesContainer {
             return Promise.reject(new Error("Key not exists"));
         }
     }
+    /**
+       * @inheritdoc
+       */
     collection(name) {
         return new PreferencesCollectionRefImpl(this, name);
     }
+    /**
+       * @inheritdoc
+       */
     listen(listener, collection) {
         return this.events.addListener(listener, collection);
     }

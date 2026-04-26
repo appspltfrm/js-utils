@@ -1,20 +1,27 @@
 import { Type } from "./Type.js";
 /**
- * An interface that a function passed into {@link forwardRef} has to implement.
+ * An interface for functions passed into `forwardRef`.
  */
 export interface ForwardRefFn {
     (): any;
 }
 /**
- * Allows to refer to references which are not yet defined.
+ * Allows to refer to references that are not yet defined.
  *
- * For instance, `forwardRef` is used when the `token` which we need to refer to for the purposes of
- * DI is declared,
- * but not yet defined. It is also used when the `token` which we use when creating a query is not
- * yet defined.
+ * This is useful in scenarios like Dependency Injection or class decorators
+ * where two classes refer to each other (circular dependency).
  *
- * ### Example
- * {@example core/di/ts/forward_ref/forward_ref_spec.ts region='forward_ref'}
- * @experimental
+ * @param forwardRefFn A function that returns the reference when called.
+ * @returns A token that can be resolved later.
+ *
+ * @example
+ * ```typescript
+ * @serializable({
+ *   properties: {
+ *     owner: { propertyType: forwardRef(() => User) }
+ *   }
+ * })
+ * class Order { owner: User; }
+ * ```
  */
 export declare function forwardRef(forwardRefFn: ForwardRefFn): Type<any>;

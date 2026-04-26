@@ -1,26 +1,38 @@
 /**
- * Zaawansowana klasa bazowa dla typów wyliczeniowych w TypeScript.
- * Rozwiązuje problemy ze standardowymi enumami, oferując pełną obiektowość i łatwą serializację.
+ * An advanced base class for enumerated types in TypeScript.
  *
- * Przykład użycia:
+ * Unlike standard TypeScript enums, these are full-fledged objects, allowing for
+ * better type safety, methods, and seamless JSON serialization.
+ *
+ * @example
  * ```typescript
  * class UserRole extends Enum {
  *   static readonly ADMIN = new UserRole("ADMIN");
  *   static readonly USER = new UserRole("USER");
  * }
+ *
+ * const role = UserRole.valueOf("ADMIN");
+ * console.log(role === UserRole.ADMIN); // true
  * ```
  */
 export class Enum {
     name;
     /**
-     * Zwraca listę wszystkich zarejestrowanych wartości dla danego Enuma.
-     */
+       * Returns a list of all registered values for this enum class.
+       * This method is protected and should be exposed via a public static method in subclasses.
+       */
     static values() {
         return valuesRef(this).slice();
     }
     /**
-     * Tworzy instancję Enuma na podstawie wartości JSON (string lub obiekt z polem name).
-     */
+       * Creates an enum instance from a JSON value (either a string or an object with a `name` property).
+       * This method is protected and should be exposed via a public static method in subclasses.
+       *
+       * @param value The JSON value to parse.
+       * @param unknownFactory Optional factory function to handle unknown values.
+       * @returns The matching enum instance.
+       * @throws Error if the value is invalid and no unknownFactory is provided.
+       */
     static fromJSON(value, unknownFactory) {
         let name;
         if (typeof value === "string") {
@@ -42,9 +54,14 @@ export class Enum {
         throw new Error("Invalid value " + JSON.stringify(value) + " for enum " + jsonTypeName(this));
     }
     /**
-     * Zwraca instancję Enuma na podstawie nazwy.
-     * @throws Błąd, jeśli nazwa nie odpowiada żadnej zdefiniowanej wartości.
-     */
+       * Returns an enum instance by its name.
+       * This method is protected and should be exposed via a public static method in subclasses.
+       *
+       * @param name The name of the enum value (string or JSON object).
+       * @param unknownFactory Optional factory function to handle unknown names.
+       * @returns The matching enum instance.
+       * @throws Error if the name is invalid and no unknownFactory is provided.
+       */
     static valueOf(name, unknownFactory) {
         CHECK_NAME: if (name) {
             if (typeof name === "object" && name) {
@@ -66,13 +83,21 @@ export class Enum {
         }
         throw new Error("Invalid value " + JSON.stringify(name) + " for enum " + this.name);
     }
+    /**
+       * Creates a new enum constant.
+       * @param name The unique name of the enum constant.
+       */
     constructor(name) {
         this.name = name;
         addValue(this.constructor, this);
     }
     /**
-     * Porównuje obecną wartość Enuma z inną wartością (string, Enum lub JSON).
-     */
+       * Compares the current enum value with another value.
+       * Supports comparison with strings (names), other Enum instances, or JSON representations.
+       *
+       * @param value The value to compare against.
+       * @returns `true` if values match, `false` otherwise.
+       */
     equals(value) {
         if (value === null || value === undefined || typeof value === "function" || typeof value === "number" || typeof value === "boolean") {
             return false;
@@ -88,6 +113,9 @@ export class Enum {
         }
         return false;
     }
+    /**
+       * Converts the enum instance to a JSON-serializable object.
+       */
     toJSON() {
         return { "@type": jsonTypeName(this), name: this.name };
     }

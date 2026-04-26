@@ -2,12 +2,8 @@ import { Serializer } from "../Serializer.js";
 import { setupSerialization } from "../setupSerialization.js";
 import "reflect-metadata";
 /**
- * Dekorator definiujący właściwości pola podczas serializacji.
- * Pozwala określić typ pola, jego nazwę w formacie JSON oraz dodatkowe opcje.
- *
- * @param type Klasa lub Serializer używany do obsługi tego pola.
- * @param jsonName Opcjonalna nazwa pola w JSON (jeśli inna niż w klasie).
- * @param options Dodatkowe opcje serializacji.
+ * Decorator defining property configuration for serialization.
+ * Handles various overloads to provide a flexible API.
  */
 export function property() {
     let jsonType;

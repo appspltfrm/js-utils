@@ -3,6 +3,9 @@ import { map } from "rxjs/operators";
 import { deepClone } from "../deepClone.js";
 import { PreferencesCollectionRefImpl } from "../PreferencesCollectionRefImpl.js";
 import { PreferencesItemImpl } from "../PreferencesItemImpl.js";
+/**
+ * Internal observer for preference collection items using RxJS.
+ */
 class CollectionItemsObserver extends Observable {
     collection;
     constructor(collection) {
@@ -37,6 +40,19 @@ class CollectionItemsObserver extends Observable {
         }
     }
 }
+/**
+ * Injects RxJS reactive methods (`observeItems`, `observeValues`) into the
+ * `PreferencesCollectionRef` class.
+ *
+ * This must be called before using any reactive methods on preference collections.
+ *
+ * @example
+ * ```typescript
+ * injectCollectionRxjs();
+ * const theme$ = userPrefs.observeValues();
+ * theme$.subscribe(values => console.log(values));
+ * ```
+ */
 export function injectCollectionRxjs() {
     PreferencesCollectionRefImpl.prototype.observeItems = function () {
         return new CollectionItemsObserver(this);

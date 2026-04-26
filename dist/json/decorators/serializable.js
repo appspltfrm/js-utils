@@ -1,13 +1,23 @@
 import { getSupertypes } from "../getSupertypes.js";
 import { setupSerialization } from "../setupSerialization.js";
 /**
- * Dekorator oznaczający klasę jako serializowalną.
- * Pozwala na zachowanie informacji o typie klasy podczas konwersji do formatu JSON.
+ * Decorator that marks a class as serializable.
  *
- * Jeśli projekt korzysta z `TsTransformer`, metadane o polach są wstrzykiwane automatycznie.
- * W przeciwnym razie należy je zdefiniować w `options`.
+ * It allows preserving the class type information during JSON conversion,
+ * enabling full reconstruction of instances including methods and hierarchy.
  *
- * @param options Konfiguracja serializacji (opcjonalna przy użyciu TsTransformera).
+ * If the project uses `TsTransformer`, property metadata is injected automatically.
+ * Otherwise, properties must be manually defined in the `options`.
+ *
+ * @param options Optional serialization configuration.
+ *
+ * @example
+ * ```typescript
+ * @serializable()
+ * class User {
+ *   name: string;
+ * }
+ * ```
  */
 export function serializable(options) {
     // when TsTransformer used, there can be up to 2 arguments

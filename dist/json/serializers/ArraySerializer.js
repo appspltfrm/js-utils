@@ -2,7 +2,20 @@ import { resolveForwardRef } from "../../core/resolveForwardRef.js";
 import { serializeImpl } from "../serializeImpl.js";
 import { Serializer } from "../Serializer.js";
 import { unserializeImpl } from "../unserializeImpl.js";
+/**
+ * Serializer for arrays of a specific type.
+ *
+ * @example
+ * ```typescript
+ * const serializer = new ArraySerializer(User);
+ * const json = serializer.serialize([new User("Jan"), new User("Marek")]);
+ * ```
+ */
 export class ArraySerializer extends Serializer {
+    /**
+       * Creates a new ArraySerializer.
+       * @param valueTypeOrSerializer The type or custom serializer for array elements.
+       */
     constructor(valueTypeOrSerializer) {
         super();
         if (arguments.length == 1 && !valueTypeOrSerializer) {
@@ -12,7 +25,13 @@ export class ArraySerializer extends Serializer {
             this.typeOrSerializer = resolveForwardRef(valueTypeOrSerializer);
         }
     }
+    /**
+       * The type or serializer used for individual array elements.
+       */
     typeOrSerializer;
+    /**
+       * Serializes an array of values.
+       */
     serialize(value, options) {
         const serializer = this.typeOrSerializer instanceof Serializer ? this.typeOrSerializer : undefined;
         if (this.isUndefinedOrNull(value)) {
@@ -32,6 +51,9 @@ export class ArraySerializer extends Serializer {
             return serializeImpl(value, this.typeOrSerializer, options);
         }
     }
+    /**
+       * Unserializes a JSON array into an array of class instances.
+       */
     unserialize(json, options) {
         const serializer = this.typeOrSerializer instanceof Serializer ? this.typeOrSerializer : undefined;
         if (this.isUndefinedOrNull(json)) {
@@ -52,6 +74,9 @@ export class ArraySerializer extends Serializer {
         }
     }
 }
+/**
+ * Pre-defined instances of ArraySerializer for common types.
+ */
 (function (ArraySerializer) {
     ArraySerializer.ofAny = new ArraySerializer();
     ArraySerializer.ofString = new ArraySerializer(String);

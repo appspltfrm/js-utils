@@ -4,6 +4,17 @@ import { deepClone } from "./deepClone.js";
 import { merge } from "./merge.js";
 import { PreferencesCollectionRefImpl } from "./PreferencesCollectionRefImpl.js";
 import { PreferencesItemImpl } from "./PreferencesItemImpl.js";
+/**
+ * An implementation of PreferencesContainer that stores data in memory (RAM).
+ * Data is volatile and will be lost when the application is restarted.
+ *
+ * @example
+ * ```typescript
+ * const container = new MemoryPreferencesContainer();
+ * const prefs = container.collection("app");
+ * await prefs.set("theme", "light");
+ * ```
+ */
 export class MemoryPreferencesContainer {
     memory = [];
     events = new ContainerEventsManager();
@@ -16,6 +27,9 @@ export class MemoryPreferencesContainer {
         }
         return undefined;
     }
+    /**
+       * @inheritdoc
+       */
     set(collection, key, value, options) {
         let item = this.memory.find(item => item.collection === collection && deepEqual(item.key, key));
         if (item) {
@@ -41,10 +55,16 @@ export class MemoryPreferencesContainer {
             return Promise.resolve(this.newItem(item));
         }
     }
+    /**
+       * @inheritdoc
+       */
     get(collection, key) {
         const item = this.memory.find(item => item.collection === collection && deepEqual(item.key, key));
         return Promise.resolve(this.newItem(item || undefined));
     }
+    /**
+       * @inheritdoc
+       */
     deleteAll(collection) {
         const deleted = [];
         for (let i = this.memory.length - 1; i >= 0; i--) {
@@ -62,6 +82,9 @@ export class MemoryPreferencesContainer {
         }
         return Promise.resolve(deleted);
     }
+    /**
+       * @inheritdoc
+       */
     delete(collection, ...keys) {
         const deleted = [];
         KEYS: for (const key of keys) {
@@ -82,9 +105,15 @@ export class MemoryPreferencesContainer {
         }
         return Promise.resolve(deleted);
     }
+    /**
+       * @inheritdoc
+       */
     exists(collection, key) {
         return Promise.resolve(!!this.memory.find(item => item.collection === collection && deepEqual(item.key, key)));
     }
+    /**
+       * @inheritdoc
+       */
     async items(collection, keysToFilter) {
         const items = [];
         const args = arguments;
@@ -108,6 +137,9 @@ export class MemoryPreferencesContainer {
         }
         return Promise.resolve(items);
     }
+    /**
+       * @inheritdoc
+       */
     update(collection, key, changes) {
         const item = this.memory.find(item => item.collection === collection && deepEqual(item.key, key));
         if (item) {
@@ -128,9 +160,15 @@ export class MemoryPreferencesContainer {
             return Promise.reject(new Error("Key not exists"));
         }
     }
+    /**
+       * @inheritdoc
+       */
     collection(name) {
         return new PreferencesCollectionRefImpl(this, name);
     }
+    /**
+       * @inheritdoc
+       */
     listen(listener, collection) {
         return this.events.addListener(listener, collection);
     }

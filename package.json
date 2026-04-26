@@ -1,7 +1,7 @@
 {
   "name": "@appspltfrm/js-utils",
   "type": "module",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "sideEffects": false,
   "scripts": {
     "build": "node-utils-file-system-glob-delete \"dist/**/*\" && tsc -p tsconfig.json && npm run build:TsTransformer",
