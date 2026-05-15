@@ -101,6 +101,15 @@ export abstract class Enum {
       return unknownFactory(value);
     }
 
+    if (name) {
+      suppressRegistration = true;
+      try {
+        return new (this as any)(name);
+      } finally {
+        suppressRegistration = false;
+      }
+    }
+
     throw new Error("Invalid value " + JSON.stringify(value) + " for enum " + jsonTypeName(this));
   }
 
@@ -177,7 +186,12 @@ export abstract class Enum {
   }
 }
 
+let suppressRegistration = false;
+
 function addValue<EnumClass extends Enum>(enumClass: Type<EnumClass>, value: EnumClass) {
+  if (suppressRegistration) {
+    return;
+  }
   valuesRef(enumClass).push(value);
 }
 

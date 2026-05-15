@@ -24,6 +24,7 @@ export {final} from "./final.js";
 export {forwardRef} from "./forwardRef.js";
 export {implementTimestampInDate} from "./Timestamp.js";
 export {resolveForwardRef} from "./resolveForwardRef.js";
+export {shuffle} from "./shuffle.js";
 export {sleep} from "./sleep.js";
 export {timeZoneOffset} from "./timeZoneOffset.js";
 export {toInteger, isArrayContainsInstanceOf, mapEntries, toFloat, toString} from "./types.js";

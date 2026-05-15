@@ -51,6 +51,15 @@ export class Enum {
         if (unknownFactory) {
             return unknownFactory(value);
         }
+        if (name) {
+            suppressRegistration = true;
+            try {
+                return new this(name);
+            }
+            finally {
+                suppressRegistration = false;
+            }
+        }
         throw new Error("Invalid value " + JSON.stringify(value) + " for enum " + jsonTypeName(this));
     }
     /**
@@ -120,7 +129,11 @@ export class Enum {
         return { "@type": jsonTypeName(this), name: this.name };
     }
 }
+let suppressRegistration = false;
 function addValue(enumClass, value) {
+    if (suppressRegistration) {
+        return;
+    }
     valuesRef(enumClass).push(value);
 }
 const enumValuesProp = Symbol("@appspltfrm/js-utils/core/Enum:values");
