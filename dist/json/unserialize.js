@@ -1,4 +1,4 @@
-import { unserializeImpl } from "./unserializeImpl.js";
+import { _unserializeImpl } from "./_unserializeImpl.js";
 /**
  * Reconstructs (hydrates) a JSON object back into a class instance.
  *
@@ -20,6 +20,6 @@ export function unserialize(json, targetClass, options) {
     if (json === undefined || json === null) {
         return json;
     }
-    return unserializeImpl(json, targetClass, options);
+    return _unserializeImpl(json, targetClass, options);
 }
 //# sourceMappingURL=unserialize.js.map

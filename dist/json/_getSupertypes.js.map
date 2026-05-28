@@ -1,0 +1,1 @@
+{"version":3,"file":"_getSupertypes.js","sourceRoot":"","sources":["../../src/json/_getSupertypes.ts"],"names":[],"mappings":"AACA,OAAO,EAAC,iBAAiB,EAAC,MAAM,yBAAyB,CAAC;AAG1D,MAAM,UAAU,aAAa,CAAC,IAAU;IACtC,OAAO,iBAAiB,CAAC,IAAI,CAAC,SAAS,CAAC,CAAC,GAAG,CAAC,IAAI,CAAC,EAAE,CAAC,IAAI,CAAC,WAAW,CAAC,CAAC;AACzE,CAAC"}

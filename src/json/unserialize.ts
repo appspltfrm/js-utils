@@ -1,6 +1,6 @@
 import {Type} from "../core/Type.js";
 import {SerializationOptions} from "./SerializationOptions.js";
-import {unserializeImpl} from "./unserializeImpl.js";
+import {_unserializeImpl} from "./_unserializeImpl.js";
 
 /**
  * Reconstructs (hydrates) a JSON object back into a class instance.
@@ -25,5 +25,5 @@ export function unserialize(json: any, targetClass?: Type, options?: Serializati
     return json;
   }
 
-  return unserializeImpl(json, targetClass, options);
+  return _unserializeImpl(json, targetClass, options);
 }

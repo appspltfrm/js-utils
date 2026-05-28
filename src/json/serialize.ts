@@ -1,5 +1,5 @@
 import {SerializationOptions} from "./SerializationOptions.js";
-import {serializeImpl} from "./serializeImpl.js";
+import {_serializeImpl} from "./_serializeImpl.js";
 
 /**
  * Serializes an object into a JSON-compatible format, preserving type information
@@ -17,5 +17,5 @@ import {serializeImpl} from "./serializeImpl.js";
  * ```
  */
 export function serialize(object: any, options?: SerializationOptions): any {
-  return serializeImpl(object, undefined, options);
+  return _serializeImpl(object, undefined, options);
 }

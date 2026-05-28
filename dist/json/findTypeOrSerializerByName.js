@@ -1,4 +1,4 @@
-import { globalProviders } from "./globalProviders.js";
+import { globalProviders } from "./_globalProviders.js";
 export function findTypeOrSerializerByName(name, typeProviders) {
     if (typeof name === "object") {
         if (typeof name?.["@type"] !== "string") {

@@ -1,5 +1,5 @@
 import {Type} from "../core/Type.js";
-import {globalProviders} from "./globalProviders.js";
+import {globalProviders} from "./_globalProviders.js";
 import {Serializer} from "./Serializer.js";
 import {TypeNameProvider, TypeNameSerializerProvider, TypeProviders, TypeWithJsonTypeName} from "./TypeProvider.js";
 

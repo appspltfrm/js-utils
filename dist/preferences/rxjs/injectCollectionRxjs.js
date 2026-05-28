@@ -1,8 +1,8 @@
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
-import { deepClone } from "../deepClone.js";
+import { deepClone } from "../_deepClone.js";
 import { PreferencesCollectionRefImpl } from "../PreferencesCollectionRefImpl.js";
-import { PreferencesItemImpl } from "../PreferencesItemImpl.js";
+import { PreferencesItemImpl } from "../_PreferencesItemImpl.js";
 /**
  * Internal observer for preference collection items using RxJS.
  */

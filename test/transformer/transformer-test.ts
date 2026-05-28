@@ -1,4 +1,4 @@
-import {serializable} from "../../src/json/decorators/serializable.js";
+import {serializable} from "../../src/json/serializable.js";
 import BigNumber from "bignumber.js";
 import {LocalDate} from "../../src/core/LocalDate.js";
 import {serialize} from "../../src/json/serialize.js";
@@ -87,9 +87,9 @@ function runTests() {
             console.log(`Test: ${test.name}`);
             const json = serialize(test.instance);
             console.log("JSON:", JSON.stringify(json, null, 2));
-            
+
             const restored = unserialize(json, test.instance.constructor as any);
-            
+
             // Weryfikacja typu klasy
             if (!(restored instanceof (test.instance.constructor as any))) {
                 throw new Error(`Przywrócony obiekt nie jest instancją ${test.instance.constructor.name}`);
@@ -110,7 +110,7 @@ function runTests() {
     }
 
     console.log(`=== Podsumowanie: ${successCount}/${tests.length} testów zakończonych sukcesem ===`);
-    
+
     if (successCount !== tests.length) {
         process.exit(1);
     }

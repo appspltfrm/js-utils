@@ -1,4 +1,4 @@
-import {globalProviders} from "./globalProviders.js";
+import {globalProviders} from "./_globalProviders.js";
 import {InternalTypeProvider, TypeProvider, TypeProviders} from "./TypeProvider.js";
 
 export function registerGlobalProvider(provider: TypeProvider, options?: RegisterGlobalProviderOptions) {

@@ -1,6 +1,6 @@
-import { ContainerEventsManager } from "./ContainerEventsManager.js";
+import { ContainerEventsManager } from "./_ContainerEventsManager.js";
 import { PreferencesCollectionRef, PreferencesContainer, PreferencesItem, PreferencesItemEvent, PreferencesItemEventListener, PreferencesSetOptions } from "./interfaces.js";
-import { PreferencesItemImpl } from "./PreferencesItemImpl.js";
+import { PreferencesItemImpl } from "./_PreferencesItemImpl.js";
 /**
  * Internal representation of an item in MemoryPreferencesContainer.
  */

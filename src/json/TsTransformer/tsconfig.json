@@ -7,7 +7,9 @@
         "customConditions": null
     },
     "files": [
-        "index.ts"
+        "index.ts",
+        "transformer.ts",
+        "_sourceFileIndex.ts"
     ],
     "exclude": [
         "dist",

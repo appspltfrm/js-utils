@@ -1,4 +1,4 @@
-import { globalProviders } from "./globalProviders.js";
+import { globalProviders } from "./_globalProviders.js";
 export function registerGlobalProvider(provider, options) {
     const internal = provider;
     const existing = globalProviders.findIndex(glob => (internal.name && glob.name === internal.name &&

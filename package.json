@@ -1,8 +1,11 @@
 {
   "name": "@appspltfrm/js-utils",
   "type": "module",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "sideEffects": false,
+  "bin": {
+    "appspltfrm-js-utils-validate-serializable": "./dist/json/cli/validateSerializable.js"
+  },
   "scripts": {
     "build": "node-utils-file-system-glob-delete \"dist/**/*\" && tsc -p tsconfig.json && npm run build:TsTransformer",
     "build:TsTransformer": "tsc -p src/json/TsTransformer/tsconfig.json --module commonjs --target esnext --moduleResolution node --outDir dist && node-utils-file-system-glob-copy src dist \"**/package.json\"",
@@ -18,20 +21,16 @@
     "reflect-metadata": "^0.2.2"
   },
   "optionalDependencies": {
+    "@clack/prompts": "^1.1.0",
     "bignumber.js": "^9.0.0",
     "fast-equals": "^5.0.0",
     "rxjs": "^7.4.0"
   },
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js",
-      "monorepo": "./src/index.ts"
-    },
     "./*": {
-      "types": "./dist/*/index.d.ts",
-      "default": "./dist/*/index.js",
-      "monorepo": "./src/*/index.ts"
+      "monorepo": "./src/*",
+      "types": "./dist/*",
+      "default": "./dist/*"
     }
   }
 }

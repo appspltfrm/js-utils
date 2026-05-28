@@ -1,4 +1,4 @@
-import { serializeImpl } from "./serializeImpl.js";
+import { _serializeImpl } from "./_serializeImpl.js";
 /**
  * Serializes an object into a JSON-compatible format, preserving type information
  * for classes marked with `@serializable`.
@@ -15,6 +15,6 @@ import { serializeImpl } from "./serializeImpl.js";
  * ```
  */
 export function serialize(object, options) {
-    return serializeImpl(object, undefined, options);
+    return _serializeImpl(object, undefined, options);
 }
 //# sourceMappingURL=serialize.js.map

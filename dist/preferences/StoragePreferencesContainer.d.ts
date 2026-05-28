@@ -1,6 +1,6 @@
-import { ContainerEventsManager } from "./ContainerEventsManager.js";
+import { ContainerEventsManager } from "./_ContainerEventsManager.js";
 import { PreferencesCollectionRef, PreferencesContainer, PreferencesItem, PreferencesItemEvent, PreferencesSetOptions } from "./interfaces.js";
-import { PreferencesItemImpl } from "./PreferencesItemImpl.js";
+import { PreferencesItemImpl } from "./_PreferencesItemImpl.js";
 /**
  * An implementation of PreferencesContainer that uses Web Storage API
  * (`localStorage` or `sessionStorage`) for persistent or session-based storage.

@@ -1,8 +1,8 @@
-import { ContainerEventsManager } from "./ContainerEventsManager.js";
-import { deepClone } from "./deepClone.js";
-import { merge } from "./merge.js";
+import { ContainerEventsManager } from "./_ContainerEventsManager.js";
+import { deepClone } from "./_deepClone.js";
+import { merge } from "./_merge.js";
 import { PreferencesCollectionRefImpl } from "./PreferencesCollectionRefImpl.js";
-import { PreferencesItemImpl } from "./PreferencesItemImpl.js";
+import { PreferencesItemImpl } from "./_PreferencesItemImpl.js";
 /**
  * An implementation of PreferencesContainer that uses Web Storage API
  * (`localStorage` or `sessionStorage`) for persistent or session-based storage.
