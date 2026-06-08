@@ -9,7 +9,10 @@ import { _unserializeImpl } from "./_unserializeImpl.js";
 export function toJsonImpl(options) {
     const prototypesTree = getPrototypesTree(this);
     const typesTree = getTypesTree(prototypesTree);
-    const serializationOptions = { typeProviders: [].concat(options?.typeProviders ?? [], typesTree[0].__jsonTypes ?? []) };
+    const serializationOptions = {
+        ...options,
+        typeProviders: [].concat(options?.typeProviders ?? [], typesTree[0].__jsonTypes ?? [])
+    };
     let json = {};
     // call toJSON for super types, only if hard coded in a class
     for (let t = 1; t < typesTree.length; t++) {
@@ -28,27 +31,28 @@ export function toJsonImpl(options) {
         if (value === undefined || typeof value === "function") {
             continue;
         }
+        const propertyOptions = mergePropertyOptions(serializationOptions, config);
         const name = config.propertyJsonName ? config.propertyJsonName : propertyName;
         if (Array.isArray(value)) {
-            const serializer = config.propertyType instanceof Serializer ? config.propertyType : (config.propertyType && findTypeSerializer(config.propertyType, serializationOptions.typeProviders));
+            const serializer = config.propertyType instanceof Serializer ? config.propertyType : (config.propertyType && findTypeSerializer(config.propertyType, propertyOptions.typeProviders));
             if (serializer instanceof ArraySerializer) {
-                json[name] = serializer.serialize(value, serializationOptions);
+                json[name] = serializer.serialize(value, propertyOptions);
             }
             else {
                 json[name] = [];
                 for (const i of value) {
-                    json[name].push(serializer ? serializer.serialize(i, serializationOptions) : _serializeImpl(i, config.propertyType, serializationOptions));
+                    json[name].push(serializer ? serializer.serialize(i, propertyOptions) : _serializeImpl(i, config.propertyType, propertyOptions));
                 }
             }
         }
         else {
             const type = (config.propertyType || config.propertyDesignType) ?? identifyType(value);
-            const serializer = config.propertyType instanceof Serializer ? config.propertyType : findTypeSerializer(type, serializationOptions.typeProviders);
+            const serializer = config.propertyType instanceof Serializer ? config.propertyType : findTypeSerializer(type, propertyOptions.typeProviders);
             if (serializer) {
-                json[name] = serializer.serialize(value, serializationOptions);
+                json[name] = serializer.serialize(value, propertyOptions);
             }
             else {
-                json[name] = _serializeImpl(value, type, serializationOptions);
+                json[name] = _serializeImpl(value, type, propertyOptions);
             }
         }
     }
@@ -86,7 +90,10 @@ export function fromJsonImpl(json, options) {
     }
     const prototypesTree = getPrototypesTree(instance);
     const typesTree = getTypesTree(prototypesTree);
-    const serializationOptions = { typeProviders: [].concat(options?.typeProviders ?? [], typesTree[0].__jsonTypes ?? []) };
+    const serializationOptions = {
+        ...options,
+        typeProviders: [].concat(options?.typeProviders ?? [], typesTree[0].__jsonTypes ?? [])
+    };
     const properties = getDeclaredProperties(instance, typesTree);
     // property names that already unserialized
     const unserializedProperties = [];
@@ -99,22 +106,23 @@ export function fromJsonImpl(json, options) {
             if (typeof value === "function") {
                 continue;
             }
+            const propertyOptions = mergePropertyOptions(serializationOptions, config);
             if (Array.isArray(value)) {
-                const serializer = config.propertyType instanceof Serializer ? config.propertyType : (config.propertyType && findTypeSerializer(config.propertyType, serializationOptions.typeProviders));
+                const serializer = config.propertyType instanceof Serializer ? config.propertyType : (config.propertyType && findTypeSerializer(config.propertyType, propertyOptions.typeProviders));
                 if (serializer instanceof ArraySerializer) {
-                    instance[propertyName] = serializer.unserialize(value, serializationOptions);
+                    instance[propertyName] = serializer.unserialize(value, propertyOptions);
                 }
                 else {
                     instance[propertyName] = [];
                     for (const i of value) {
-                        instance[propertyName].push(serializer ? serializer.unserialize(i, serializationOptions) : _unserializeImpl(i, config.propertyType, serializationOptions));
+                        instance[propertyName].push(serializer ? serializer.unserialize(i, propertyOptions) : _unserializeImpl(i, config.propertyType, propertyOptions));
                     }
                 }
             }
             else {
                 const type = (config.propertyType || config.propertyDesignType) ?? identifyType(value);
-                const serializer = config.propertyType instanceof Serializer ? config.propertyType : findTypeSerializer(type, serializationOptions.typeProviders);
-                instance[propertyName] = serializer ? serializer.unserialize(value, serializationOptions) : _unserializeImpl(value, type, serializationOptions);
+                const serializer = config.propertyType instanceof Serializer ? config.propertyType : findTypeSerializer(type, propertyOptions.typeProviders);
+                instance[propertyName] = serializer ? serializer.unserialize(value, propertyOptions) : _unserializeImpl(value, type, propertyOptions);
             }
             unserializedProperties.push(name);
         }
@@ -132,6 +140,23 @@ export function fromJsonImpl(json, options) {
 }
 function getTypesTree(prototypes) {
     return prototypes.map(type => type.constructor);
+}
+/**
+ * Merges the shared (class/call-level) serialization options with the options declared on a single property
+ * via the `@property(...)` decorator. Property-level options take precedence over the shared ones; per-property
+ * type providers are placed first so the more-specific providers win on conflict.
+ */
+function mergePropertyOptions(base, config) {
+    const { propertyType, propertyDesignType, propertyJsonName, typeProviders, ...propertyOptions } = config;
+    // Fast path: property carries no own serialization options, reuse the shared base object.
+    if (typeProviders === undefined && Object.keys(propertyOptions).length === 0) {
+        return base;
+    }
+    return {
+        ...base,
+        ...propertyOptions,
+        typeProviders: [].concat(typeProviders ?? [], base.typeProviders ?? [])
+    };
 }
 function getDeclaredProperties(thiz, types) {
     let properties = {};

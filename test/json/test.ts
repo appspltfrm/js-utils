@@ -1,6 +1,10 @@
 import "reflect-metadata";
-import {Enum, EnumFromJSONValue, EnumStaticName, EnumValueOfValue} from "../../src/core/index.js";
-import {property, serializable, subtype, unserialize} from "../../src/json/index.js";
+import {Enum, EnumFromJSONValue, EnumStaticName, EnumValueOfValue} from "../../src/core/Enum.js";
+import {property} from "../../src/json/property.js";
+import {serializable} from "../../src/json/serializable.js";
+import {serialize} from "../../src/json/serialize.js";
+import {subtype} from "../../src/json/subtype.js";
+import {unserialize} from "../../src/json/unserialize.js";
 
 export class AnimalKind extends Enum {
   static readonly cat = new AnimalKind("cat");
@@ -61,3 +65,45 @@ console.log("Cat kind:", cat.kind);
 const dog = unserialize(dogJson, Animal) as Dog;
 console.log("Dog is Dog:", dog instanceof Dog);
 console.log("Dog sound:", dog.bark());
+
+// Per-property serialization options (notStrict)
+@serializable()
+class WithOptions {
+  @property(Number, {notStrict: true})
+  lenient?: number;
+
+  @property(Number)
+  strict?: number;
+}
+
+function assert(label: string, condition: boolean) {
+  console.log(`${condition ? "PASS" : "FAIL"}: ${label}`);
+  if (!condition) {
+    process.exitCode = 1;
+  }
+}
+
+// Property-level notStrict coerces "123" -> 123 during unserialize
+const lenient = unserialize({lenient: "123", strict: 456}, WithOptions) as WithOptions;
+assert("per-property notStrict coerces string to number", lenient.lenient === 123 && typeof lenient.lenient === "number");
+
+// Round-trip keeps the coerced number
+assert("per-property notStrict round-trips", serialize(lenient).lenient === 123);
+
+// Control: a property WITHOUT notStrict still rejects a string (options are per-property, not global)
+let strictThrew = false;
+try {
+  unserialize({strict: "789"}, WithOptions);
+} catch {
+  strictThrew = true;
+}
+assert("property without notStrict still throws on string", strictThrew);
+
+// Call-level notStrict now propagates to a property that has no own options
+const callLevel = unserialize({strict: "789"}, WithOptions, {notStrict: true}) as WithOptions;
+assert("call-level notStrict reaches property on unserialize", callLevel.strict === 789);
+
+// Call-level notStrict propagates through toJSON on the serialize path too
+const holder = new WithOptions();
+(holder as any).strict = "55";
+assert("call-level notStrict reaches property on serialize", serialize(holder, {notStrict: true}).strict === 55);

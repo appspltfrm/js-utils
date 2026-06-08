@@ -1,7 +1,7 @@
 {
   "name": "@appspltfrm/js-utils",
   "type": "module",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "sideEffects": false,
   "bin": {
     "appspltfrm-js-utils-validate-serializable": "./dist/json/cli/validateSerializable.js"

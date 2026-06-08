@@ -10,7 +10,7 @@ export function _setupSerialization(type: Type) {
   if (!type.prototype.hasOwnProperty("toJSON")) {
     internalType.__jsonToJson = true;
     type.prototype.toJSON = function (options: any) {
-      return toJsonImpl.call(this);
+      return toJsonImpl.call(this, options);
     }
   }
 
