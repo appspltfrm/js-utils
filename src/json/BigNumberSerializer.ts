@@ -3,8 +3,8 @@ import {Serializer} from "./Serializer.js";
 import BigNumber from "bignumber.js";
 
 /**
- * Tylko na potrzeby tranzycji z BigNumber do BNumber, aby zachować serializację do czystego string, ale
- * odczytywac też zserializowany BNumber.
+ * Only for the transition from BigNumber to BNumber, to keep serialization to a clean string,
+ * but also read serialized BNumber.
  */
 export class BigNumberSerializer extends Serializer {
 
@@ -15,6 +15,8 @@ export class BigNumberSerializer extends Serializer {
       return value.valueOf();
     } else if (!options || !options.ignoreErrors) {
       throw new Error(`Cannot serialize "${value}" as BigNumber`);
+    } else {
+      return undefined;
     }
   }
 
@@ -25,6 +27,8 @@ export class BigNumberSerializer extends Serializer {
       return this.unserializeUndefinedOrNull(value, options);
     } else if (typeof value === "object" && typeof value.value === "string") {
       return new BigNumber(value.value);
+    } else if (typeof value === "string" || typeof value === "number") {
+      return new BigNumber(value);
     } else if (!options || !options.ignoreErrors) {
       throw new Error(`Cannot unserialize "${value}" to BigNumber`);
     } else {
@@ -37,3 +41,4 @@ export class BigNumberSerializer extends Serializer {
 export namespace BigNumberSerializer {
   export const instance = new BigNumberSerializer();
 }
+

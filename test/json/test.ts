@@ -107,3 +107,21 @@ assert("call-level notStrict reaches property on unserialize", callLevel.strict 
 const holder = new WithOptions();
 (holder as any).strict = "55";
 assert("call-level notStrict reaches property on serialize", serialize(holder, {notStrict: true}).strict === 55);
+
+// BigNumberSerializer tests
+import BigNumber from "bignumber.js";
+import {BigNumberSerializer} from "../../src/json/BigNumberSerializer.js";
+
+const bigNum = new BigNumber("123.45");
+const serialized = BigNumberSerializer.instance.serialize(bigNum);
+assert("BigNumberSerializer serializes to string representation", serialized === "123.45");
+
+const unserializedFromString = BigNumberSerializer.instance.unserialize("123.45");
+assert("BigNumberSerializer unserializes from string representation", unserializedFromString instanceof BigNumber && unserializedFromString.isEqualTo(bigNum));
+
+const unserializedFromNumber = BigNumberSerializer.instance.unserialize(123.45);
+assert("BigNumberSerializer unserializes from number representation", unserializedFromNumber instanceof BigNumber && unserializedFromNumber.isEqualTo(bigNum));
+
+const unserializedFromBNumberObject = BigNumberSerializer.instance.unserialize({value: "123.45"});
+assert("BigNumberSerializer unserializes from BNumber object representation", unserializedFromBNumberObject instanceof BigNumber && unserializedFromBNumberObject.isEqualTo(bigNum));
+
