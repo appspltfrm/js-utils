@@ -39,6 +39,8 @@ export function property(jsonName?: string): Function;
 
 export function property(jsonName: string, options?: SerializationOptions): Function;
 
+export function property(options: SerializationOptions): Function;
+
 /**
  * Decorator defining property configuration for serialization.
  * Handles various overloads to provide a flexible API.

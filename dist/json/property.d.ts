@@ -29,3 +29,4 @@ export declare function property(type: Type | FromJsonType | Serializer, jsonNam
 export declare function property(type: Type | FromJsonType | Serializer, jsonName: string, options?: SerializationOptions): Function;
 export declare function property(jsonName?: string): Function;
 export declare function property(jsonName: string, options?: SerializationOptions): Function;
+export declare function property(options: SerializationOptions): Function;
