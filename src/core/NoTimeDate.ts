@@ -46,7 +46,8 @@ export class NoTimeDate extends Date implements Clone<NoTimeDate> {
   constructor(valueOrYear?: number | string | Date, month?: number, date?: number) {
 
     if (typeof month === "number") {
-      super(Date.UTC(valueOrYear as number, month, date, 0, 0, 0, 0));
+      // Date.UTC treats an explicitly-passed undefined as NaN, unlike an omitted argument
+      super(Date.UTC(valueOrYear as number, month, date ?? 1, 0, 0, 0, 0));
     } else if (typeof valueOrYear === "number" || typeof valueOrYear === "string" || valueOrYear instanceof Date) {
       super(valueOrYear);
     } else {

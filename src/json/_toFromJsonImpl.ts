@@ -61,7 +61,9 @@ export function toJsonImpl(this: any, options?: SerializationOptions) {
         }
       }
     } else {
-      const type = (config.propertyType || config.propertyDesignType) ?? identifyType(value);
+      // design:type is Object for type-only imports and type aliases (e.g. Firestore Timestamp), so identify by value
+      const designType = config.propertyDesignType !== Object ? config.propertyDesignType : undefined;
+      const type = (config.propertyType || designType) ?? identifyType(value);
       const serializer = config.propertyType instanceof Serializer ? config.propertyType : findTypeSerializer(type, propertyOptions.typeProviders);
       if (serializer) {
         json[name] = serializer.serialize(value, propertyOptions);

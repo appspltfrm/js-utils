@@ -10,7 +10,7 @@ function serializeImplWithSerializer(value, type, typeSerializer, options) {
     }
     else {
         const newArray = Array.isArray(value) ? [] : undefined;
-        const serializer = typeSerializer instanceof Serializer ? typeSerializer : (typeSerializer !== false && findTypeSerializer(type ? type : (!newArray ? identifyType(value) : undefined), options?.typeProviders));
+        const serializer = typeSerializer instanceof Serializer ? typeSerializer : (typeSerializer !== false && findTypeSerializer(type && type !== Object ? type : (!newArray ? identifyType(value) : undefined), options?.typeProviders));
         for (const i of newArray ? value : [value]) {
             if (newArray && (i === undefined || i === null)) {
                 newArray.push(i);

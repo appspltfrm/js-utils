@@ -37,7 +37,8 @@ export class NoTimeDate extends Date {
        */
     constructor(valueOrYear, month, date) {
         if (typeof month === "number") {
-            super(Date.UTC(valueOrYear, month, date, 0, 0, 0, 0));
+            // Date.UTC treats an explicitly-passed undefined as NaN, unlike an omitted argument
+            super(Date.UTC(valueOrYear, month, date ?? 1, 0, 0, 0, 0));
         }
         else if (typeof valueOrYear === "number" || typeof valueOrYear === "string" || valueOrYear instanceof Date) {
             super(valueOrYear);

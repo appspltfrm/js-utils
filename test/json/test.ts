@@ -125,3 +125,38 @@ assert("BigNumberSerializer unserializes from number representation", unserializ
 const unserializedFromBNumberObject = BigNumberSerializer.instance.unserialize({value: "123.45"});
 assert("BigNumberSerializer unserializes from BNumber object representation", unserializedFromBNumberObject instanceof BigNumber && unserializedFromBNumberObject.isEqualTo(bigNum));
 
+
+// Property with design:type Object (type-only import / type alias, e.g. Firestore Timestamp) uses the serializer
+// registered for the value's class instead of copying its fields
+import {registerGlobalProvider} from "../../src/json/registerGlobalProvider.js";
+import {Serializer} from "../../src/json/Serializer.js";
+
+class Stamp {
+  constructor(public readonly _seconds: number) {
+  }
+}
+
+class StampSerializer extends Serializer {
+  serialize(object: Stamp) {
+    return {"@type": "Stamp", seconds: object._seconds};
+  }
+
+  unserialize(json: any) {
+    return new Stamp(json.seconds);
+  }
+}
+
+registerGlobalProvider({type: Stamp, serializer: new StampSerializer()});
+
+@serializable()
+class WithStamp {
+  // set design:type explicitly - esbuild (tsx) doesn't emit decorator metadata, tsc emits Object for type aliases
+  @property()
+  @Reflect.metadata("design:type", Object)
+  stamp?: Stamp | string;
+}
+
+const withStamp = new WithStamp();
+withStamp.stamp = new Stamp(10);
+assert("design:type Object property uses value's global serializer", serialize(withStamp).stamp?.seconds === 10);
+assert("nested plain object value uses value's global serializer", serialize({holder: {stamp: new Stamp(11)}}).holder.stamp?.seconds === 11);

@@ -35,7 +35,8 @@ export class LocalDate extends Date {
        */
     constructor(valueOrYear, month, date, hours, minutes, seconds, ms) {
         if (typeof month === "number") {
-            super(Date.UTC(valueOrYear, month, date, hours, minutes, seconds, ms));
+            // Date.UTC treats an explicitly-passed undefined as NaN, unlike an omitted argument
+            super(Date.UTC(valueOrYear, month, date ?? 1, hours ?? 0, minutes ?? 0, seconds ?? 0, ms ?? 0));
         }
         else if (typeof valueOrYear === "number" || typeof valueOrYear === "string" || valueOrYear instanceof Date) {
             super(valueOrYear);
